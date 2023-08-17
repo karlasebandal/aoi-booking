@@ -1,0 +1,20 @@
+GET http://localhost:5000/service
+
+###
+POST http://localhost:5000/service
+
+###
+DELETE http://localhost:4000/logout
+
+###
+GET http://localhost:5000/booking
+
+###
+POST http://localhost:5000/booking
+
+{
+    "status": "pending",
+    "bookingtype": "Online",
+    "serviceid": 2,
+    "guestid": 2
+}
