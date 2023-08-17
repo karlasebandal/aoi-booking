@@ -12,8 +12,8 @@ const UserLogin = () => {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
 
-    const handleLogin = async () => {
-      //e.preventDefault();
+    const handleLogin = async (e) => {
+      e.preventDefault();
       
       console.log(`inside handleLogin: ${username}, ${password}`) 
 
@@ -43,7 +43,7 @@ const UserLogin = () => {
 
           { message  ? (
             <div>
-              <p>${message}</p>
+              <p>{message}</p>
          
               <button 
               className="block w-full bg-rescue-orange hover:bg-navy-blue hover:from-red-100 hover:to-blue-400 p-4 rounded text-gray-700 hover:text-gray-600 transition duration-300 font-bold text-sm"

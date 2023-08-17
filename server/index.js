@@ -7,7 +7,6 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
-// ROUTES
 
 // Create user
 app.post("/User", async(req, res) => {
@@ -318,7 +317,7 @@ app.post("/User/login", async(req, res) => {
 
     try {
         const result = await pool.query('SELECT * FROM \"User\" WHERE username = $1', [username]);
-        console.log(`Inside try: ${username}`)
+        //console.log(`Inside try: ${username}`)
 
 
         if (result.rows.length === 0) {
@@ -332,10 +331,10 @@ app.post("/User/login", async(req, res) => {
           return res.status(401).json({ message: 'Authentication failed' });
         }
         
-        console.log(`${password}`);
-        console.log(`${passwordMatch}`)
+        //console.log(`${password}`);
+        //console.log(`${passwordMatch}`)
         res.json({ message: 'Login successful' });
-        console.log('After res.json')
+        //console.log('After res.json')
 
       } catch (error) {
         console.error('Login error:', error);
