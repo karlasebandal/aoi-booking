@@ -1,6 +1,6 @@
 //import frameworks and libraries
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 //import components
@@ -11,17 +11,17 @@ const UserLogin = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
-      e.preventDefault();
-      
-      console.log(`inside handleLogin: ${username}, ${password}`) 
+      e.preventDefault()
 
       try {
         const response = await axios.post(`http://localhost:5000/User/login`, {username, password})
         setMessage(response.data.message)
-
-        console.log(`Message: ${message}`)
+        
+        navigate('/userdashboard')
+       
 
       } catch (error) {
         console.error('Login error:', error)
@@ -30,32 +30,13 @@ const UserLogin = () => {
       }
     }
 
-    const handleLogout = () => {
-      setMessage('');
-    };
-      
+
   return (
     <>
     
     <div className="container mx-auto">
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white p-16 rounded shadow-2xl w-2/3">
-
-          { message  ? (
-            <div>
-              <p>{message}</p>
-         
-              <button 
-              className="block w-full bg-rescue-orange hover:bg-navy-blue hover:from-red-100 hover:to-blue-400 p-4 rounded text-gray-700 hover:text-gray-600 transition duration-300 font-bold text-sm"
-              onClick={handleLogout}
-              type="submit"
-              >Log-Out</button>
-
-            </div>
-          ) : (
-            <div>
-            </div>
-          )}
 
           <h2 className="text-3xl font-bold mb-3 text-gray-800">Log-in</h2>
           <div className="pb-5 mb-5 text-sm text-left text-gray-400">

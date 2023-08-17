@@ -19,6 +19,7 @@ import Footer from './Footer';
 import UserLogin from "./UserLogin"; //Admin
 import UserRegistration from "./UserRegistration"; //AOI Registration
 import GuestLogin from "./GuestLogin"; //Guest
+import UserDashboard from "./UserDashboard";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/admin" element={<UserLogin />} />
           <Route path="/login" element={<GuestLogin />} />
           <Route path="/uregistration" element={<UserRegistration />} />
+          <Route path="/userdashboard" element={<UserDashboard />} />
 
           <Route path="/ropeaccess" element={<RopeAccess />} />
           <Route path="/whitewaterrafting" element={<WhiteWaterRafting />} />
