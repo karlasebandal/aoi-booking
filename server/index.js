@@ -116,6 +116,19 @@ app.get("/User", async(req, res) => {
     }
 })
 
+// Get Users by ID
+app.get("/User/:userId", async(req, res) => {
+    try {
+        const { userid } = req.params;
+        const allUsers = await pool.query(
+            "SELECT * FROM \"User\" WHERE userid = $1", [userid]);
+        res.json(allUsers.rows);
+    
+    } catch (err) {
+        console.error(err.message); 
+    }
+})
+
 //Get Services
 app.get("/service", async(req, res) => {
     try {
@@ -186,7 +199,7 @@ app.put("/User/:userID", async(req, res) => {
             "UPDATE \"User\" SET name = $1, username = $2, emailadd = $3, role = $4, pass = $5 WHERE userID = $6",
         [name, username, emailadd, role, pass, userID]);
 
-        res.json("User was updated");
+        res.json("User is logged in");
     } catch (err) {
         console.error(err.message);
      
@@ -334,7 +347,7 @@ app.post("/User/login", async(req, res) => {
         //console.log(`${password}`);
         //console.log(`${passwordMatch}`)
         res.json({ message: 'Login successful' });
-        //console.log('After res.json')
+        
 
       } catch (error) {
         console.error('Login error:', error);
