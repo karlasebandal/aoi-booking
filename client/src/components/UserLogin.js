@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 //import components
-import UserDashboard from './UserDashboard'
+
 
 
 const UserLogin = () => {
@@ -38,7 +38,7 @@ const UserLogin = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white p-16 rounded shadow-2xl w-2/3">
 
-          <h2 className="text-3xl font-bold mb-3 text-gray-800">Log-in</h2>
+          <h2 className="text-3xl font-bold mb-3 text-gray-800">AOI Log-in</h2>
           <div className="pb-5 mb-5 text-sm text-left text-gray-400">
             <p>You don´t have an account? &nbsp;
             <Link to="/uregistration" className="text-rescue-orange">Register now!</Link></p>

@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UserRegistration = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    userName: "",
-    emailAdd: "",
-    role: "",
-    pass: "",
-  });
+const GuestRegistration = () => {
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        emailAdd: '',
+        contactNum: '',
+        pass: ''
+      })
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
-      await axios.post("http://localhost:5000/User", formData);
-      alert("You have successfully registered.");
+        await axios.post('http://localhost:5000/Guest', formData)
+        alert('You have successfully registered.');
     } catch (error) {
-      console.error(error);
-      alert("Username is already in use.");
+        console.error(error);
+        alert('Email address is already in use.');
     }
-  };
+};
 
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
     const { name, value } = e.target; // Fixed destructuring here
     setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
+        ...formData,
+        [name]: value,
+    })
+}
+    
   return (
     <div className="container mx-auto">
       <div className="min-h-screen flex items-center justify-center">
@@ -50,10 +50,10 @@ const UserRegistration = () => {
 
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block mb-1 font-bold text-gray-500">Name</label>
+              <label className="block mb-1 font-bold text-gray-500">First Name</label>
               <input
                 type="text"
-                name="name"
+                name="firstName"
                 className="w-full border-2 border-purity p-3 rounded outline-none focus:border-marble-blue"
                 onChange={handleInputChange}
               />
@@ -61,11 +61,11 @@ const UserRegistration = () => {
 
             <div>
               <label className="block mb-1 font-bold text-gray-500">
-                User Name
+                Last Name
               </label>
               <input
                 type="text"
-                name="userName"
+                name="lastName"
                 className="w-full border-2 border-purity p-3 rounded outline-none focus:border-marble-blue"
                 onChange={handleInputChange}
               />
@@ -73,7 +73,7 @@ const UserRegistration = () => {
 
             <div>
               <label className="block mb-1 font-bold text-gray-500">
-                Email
+                Email Address
               </label>
               <input
                 type="email"
@@ -84,10 +84,10 @@ const UserRegistration = () => {
             </div>
 
             <div>
-              <label className="block mb-1 font-bold text-gray-500">Role</label>
+              <label className="block mb-1 font-bold text-gray-500">Contact Number</label>
               <input
                 type="text"
-                name="role"
+                name="contactNum"
                 className="w-full border-2 border-purity p-3 rounded outline-none focus:border-marble-blue"
                 onChange={handleInputChange}
               />
@@ -125,7 +125,7 @@ const UserRegistration = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default UserRegistration
+export default GuestRegistration
