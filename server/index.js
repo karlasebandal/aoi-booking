@@ -10,25 +10,50 @@ app.use(express.json());
 
 // Create user
 app.post("/User", async(req, res) => {
-    const { name, userName, emailAdd, role, pass } = req.body;
+    const { name, userName, emailAdd, role, pass } = req.body
 
-    try {
-        const hashedPassword = await bcrypt.hash(pass, 10)
-        const newUser = await pool.query(
-            "INSERT INTO \"User\" (name, username, emailadd, role, pass) VALUES($1, $2, $3, $4, $5)", 
-        [name, userName, emailAdd, role, hashedPassword]
-        );
-        res.json(newUser.rows);
+  try {
+    // Check if the userName is already in use
+    const existingUser = await pool.query("SELECT * FROM \"User\" WHERE userName = $1", [userName]);
 
-    } catch (err) {
-        console.error(err.message);
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ message: 'Username is not available' })
     }
+
+    const hashedPassword = await bcrypt.hash(pass, 10)
+    const newUser = await pool.query(
+      "INSERT INTO \"User\" (name, userName, emailAdd, role, pass) VALUES($1, $2, $3, $4, $5)",
+      [name, userName, emailAdd, role, hashedPassword]
+    );
+    res.json(newUser.rows);
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).json({ message: 'An error occurred while creating the user' })
+  }
 })
+
+//     const { name, userName, emailAdd, role, pass } = req.body;
+
+//     try {
+//         const hashedPassword = await bcrypt.hash(pass, 10)
+//         const newUser = await pool.query(
+//             "INSERT INTO \"User\" (name, username, emailadd, role, pass) VALUES($1, $2, $3, $4, $5)", 
+//         [name, userName, emailAdd, role, hashedPassword]
+//         );
+//         res.json(newUser.rows);
+
+//     } catch (err) {
+//         console.error(err.message);
+//     }
+// })
 
 // Create service
 app.post("/service", async(req, res) => {
+    const { name, description, price, status } = req.body
+
     try {
-        const { name, description, price, status } = req.body;
+        
         const newService = await pool.query(
             "INSERT INTO Service (name, description, price, status) VALUES($1, $2, $3, $4) RETURNING *", 
         [name, description, price, status]
@@ -42,11 +67,19 @@ app.post("/service", async(req, res) => {
 
 // Create Guests
 app.post("/guest", async(req, res) => {
+    const { firstName, lastName, emailAdd, contactNum, pass } = req.body
+
     try {
-        const { firstName, lastName, emailAdd, contactNum } = req.body;
+        const existingGuest = await pool.query("SELECT * FROM Guest WHERE emailadd = $1", [emailAdd]);
+
+        if (existingGuest.rows.length > 0) {
+        return res.status(400).json({ message: 'Email address already in use' })
+        }
+
+        const hashedPassword = await bcrypt.hash(pass, 10)
         const newGuest = await pool.query(
-            "INSERT INTO Guest (firstName, lastName, emailAdd, contactNum) VALUES($1, $2, $3, $4) RETURNING *", 
-        [firstName, lastName, emailAdd, contactNum]
+            "INSERT INTO Guest (firstName, lastName, emailAdd, contactNum, pass) VALUES($1, $2, $3, $4, $5) RETURNING *", 
+        [firstName, lastName, emailAdd, contactNum, hashedPassword]
         );
         res.json(newGuest.rows);
 
@@ -305,7 +338,7 @@ app.delete("/Booking/:bookingID", async(req, res) => {
         const deleteBooking = await pool.query("DELETE FROM Booking WHERE bookingID = $1", [bookingID]);
         res.json("Booking was deleted!")
     } catch (err) {
-        console.error(err.message);
+        console.error(err.message)
         
     }
 })
@@ -339,6 +372,39 @@ app.post("/User/login", async(req, res) => {
     
         const user = result.rows[0];
         const passwordMatch = await bcrypt.compare(password, user.pass);
+    
+        if (!passwordMatch) {
+          return res.status(401).json({ message: 'Authentication failed' });
+        }
+        
+        //console.log(`${password}`);
+        //console.log(`${passwordMatch}`)
+        res.json({ message: 'Login successful' });
+        
+
+      } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    })
+
+// Guest-Login with specific username
+app.post("/Guest/login", async(req, res) => {
+
+    const { emailAdd, password } = req.body;
+    //console.log(`Inside index.js ${username}`)
+
+    try {
+        const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);
+        //console.log(`Inside try: ${username}`)
+
+
+        if (result.rows.length === 0) {
+          return res.status(401).json({ message: 'Authentication failed' });
+        }
+    
+        const guest = result.rows[0];
+        const passwordMatch = await bcrypt.compare(password, guest.pass);
     
         if (!passwordMatch) {
           return res.status(401).json({ message: 'Authentication failed' });
