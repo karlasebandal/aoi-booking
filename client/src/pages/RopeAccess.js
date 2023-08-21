@@ -20,6 +20,7 @@ const RopeAccess = () => {
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
   //const { isLoggedIn, guestDetails } = useAuth()
+  const { isLoggedIn } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     bookingcreated: "",
@@ -192,7 +193,7 @@ const RopeAccess = () => {
 
             {guest ? (
               <button
-                onClick={handleBooking}
+                onClick={toggleLoginModal}
                 className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue" >
                 Book
               </button>
@@ -208,7 +209,7 @@ const RopeAccess = () => {
 
             {isLoginModalOpen && ( //opens modal
               <GuestLogin 
-                onLogin={handleLogin} 
+                onLogin={handleBooking} 
                 onClose={toggleLoginModal} /> //sets to false
             )}
 
