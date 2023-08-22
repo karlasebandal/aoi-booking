@@ -1,35 +1,38 @@
 //import frameworks and libraries
 import React, { useState } from 'react'
-import { Link } from "react-router-dom"; //useNavigate
+import { Link } from "react-router-dom" //useNavigate
 import axios from "axios";
 import { useAuth } from './AuthContext'
 
-const GuestLogin = ({ setIsLoggedIn, closeModal}) => {
+const GuestLogin = ({ closeModal}) => {
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [emailAdd, setEmailAdd] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+  const [emailAdd, setEmailAdd] = useState("")
+  const [password, setPassword] = useState("")
+  const [message, setMessage] = useState("")
+
   //const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async (e) => {
     e.preventDefault();
     
     try {
-      const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password});
+      const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
       setMessage(response.data.message)
       alert("You are logged in.")
-      setIsLoggedIn(true)
+      login(response.data.guestDetails)
       closeModal()
       //navigate('/guestdashboard')
     } catch (error) {
-      console.error("Login error:", error);
-      alert("Login error");
+      console.error("Login error:", error)
+      alert("Login error")
     }
   }
 
   const toggleLoginModal = () => {
-    setIsLoginModalOpen(!isLoginModalOpen);
+    setIsLoginModalOpen(!isLoginModalOpen)
   }
 
 
@@ -106,7 +109,7 @@ const GuestLogin = ({ setIsLoggedIn, closeModal}) => {
                   Log-In
                 </button>
                 <button
-                  onClick={onClose}
+                  onClick={toggleLoginModal}
                   type="button"
                   class="block w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
                   Cancel

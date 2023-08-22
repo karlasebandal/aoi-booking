@@ -8,7 +8,9 @@ import logo from "../assets/images/logo-type.svg";
 //import HomePage from '../pages/HomePage'
 //stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 const NavBar = () => {
-  const { isLoggedIn, guestDetails } = useAuth();
+  const { isLoggedIn, guestDetails } = useAuth()
+
+  console.log(`NavBar ${isLoggedIn}`)
 
   return (
     <div>
@@ -43,9 +45,10 @@ const NavBar = () => {
                 <li>
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"></div>
                     {guestDetails.firstName} {guestDetails.lastName}
+                   
                 </li>
                 ) : (
-                <li>Login</li>
+                <li>Logout</li>
                 )}
           </div>
           <div

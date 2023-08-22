@@ -15,31 +15,31 @@ import GuestLogin from '../components/GuestLogin';
 const RopeAccess = () => {
   const location = useLocation()
  // const history = useHistory()
-  const { guest } = useAuth(); //guest login
-  const [meetingDate, setMeetingDate] = useState(new Date());
+  const [meetingDate, setMeetingDate] = useState(new Date())
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
-  //const { isLoggedIn, guestDetails } = useAuth()
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, guestDetails } = useAuth()
+  const { guest, login } = useAuth()
+  //const { isLoggedIn } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     bookingcreated: "",
     status: "",
     bookingtype: "",
-    serviceid: 2,
-    guestid: 2,
+    serviceid: "",
+    guestid: "",
     bookingdate: null,
     bookingtime: "",
-  });
+  })
 
-  const queryParams = new URLSearchParams(location.search);
-  const serviceID = queryParams.get("serviceID");
+  const queryParams = new URLSearchParams(location.search)
+  const serviceID = queryParams.get("serviceID") //to get the service ID *ill handle this later
 
   //When Book button is clicked
   const handleBooking = async () => {
           
       if (!guest) { // Check if the guest is authenticated
-        setIsLoginModalOpen(true)
+        setIsLoginModalOpen(true) //pops up login form
         alert("Please log in to continue booking.");
         return
       }
@@ -52,16 +52,16 @@ const RopeAccess = () => {
         status: "Pending",
         bookingtype: bookingType,
         serviceid: serviceID,
-        guestid: user.guestId, // check on this
+        guestid: guest.guestId, // check on this 
         bookingdate: formattedDate,
         bookingtime: meetingTime,
       }
 
       // Send the data to the backend API
-      await axios.post("http://localhost:5000/Booking", newBooking);
-
+      await axios.post("http://localhost:5000/Booking", newBooking)
+      
       // Handle success
-      alert("Booking created successfully");
+      alert("Booking created successfully")
     } catch (error) { 
       // Handle error
       console.error("Error creating booking:", error);
@@ -73,22 +73,22 @@ const RopeAccess = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
   }
 
-  // const handleLogin = async (username, password) => {
-  //   // Perform login API request
-  //   try {
-  //     // Assuming the response contains guest details
-  //     const response = await api.login(username, password);
+  const handleLogin = async (username, password) => {
+    // Perform login API request
+    try {
+      // Assuming the response contains guest details
+      const response = await axios.post(`http://localhost:5000/Guest/login`, { username, password });
 
-  //     // Update isLoggedIn and guestDetails
-  //     isLoggedIn(true);
-  //     guestDetails(response.data.guestDetails);
+      // Update isLoggedIn and guestDetails
+      isLoggedIn(true)
+      guestDetails(response.data.guestDetails);
 
-  //     // Close the login modal after successful login
-  //     toggleLoginModal();
-  //   } catch (error) {
-  //     // Handle login error
-  //   }
-  // }
+      // Close the login modal after successful login
+      handleCloseModal()
+    } catch (error) {
+      // Handle login error
+    }
+  }
 
   //for the login modal
   const handleCloseModal = () => {
@@ -191,7 +191,7 @@ const RopeAccess = () => {
               <option value="5:00 - 6:30 PM">5:00 - 6:30 PM</option>
             </select>
 
-            {guest ? (
+            {isLoggedIn ? (
               <button
                 onClick={toggleLoginModal}
                 className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue" >
@@ -209,15 +209,9 @@ const RopeAccess = () => {
 
             {isLoginModalOpen && ( //opens modal
               <GuestLogin 
-                onLogin={handleBooking} 
                 onClose={toggleLoginModal} /> //sets to false
             )}
 
-            { isLoginModalOpen && 
-              <GuestLogin 
-                setIsLoggedIn={setIsLoggedIn} 
-                closeModal={() => setIsLoginModalOpen(false)} />
-            }
 
           </div>
         </div>
