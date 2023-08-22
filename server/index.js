@@ -33,21 +33,6 @@ app.post("/User", async(req, res) => {
   }
 })
 
-//     const { name, userName, emailAdd, role, pass } = req.body;
-
-//     try {
-//         const hashedPassword = await bcrypt.hash(pass, 10)
-//         const newUser = await pool.query(
-//             "INSERT INTO \"User\" (name, username, emailadd, role, pass) VALUES($1, $2, $3, $4, $5)", 
-//         [name, userName, emailAdd, role, hashedPassword]
-//         );
-//         res.json(newUser.rows);
-
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// })
-
 // Create service
 app.post("/service", async(req, res) => {
     const { name, description, price, status } = req.body
@@ -184,7 +169,9 @@ app.get("/guest", async(req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-});
+})
+
+
 
 //Get Booking
 app.get("/booking", async(req, res) => {
@@ -388,8 +375,41 @@ app.post("/User/login", async(req, res) => {
       }
     })
 
-// Guest-Login with specific username
+// Guest-Login with specific email address
 app.post("/Guest/login", async(req, res) => {
+
+    const { emailAdd, password } = req.body;
+    console.log(`guest login postmethod: ${emailAdd}`)
+
+    try {
+        const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);
+        
+
+
+        if (result.rows.length === 0) {
+          return res.status(401).json({ message: 'Authentication failed' })
+        }
+    
+        const guest = result.rows[0]
+        const passwordMatch = await bcrypt.compare(password, guest.pass);
+    
+        if (!passwordMatch) {
+          return res.status(401).json({ message: 'Authentication failed' });
+        }
+        
+        //console.log(`${password}`);
+        //console.log(`${passwordMatch}`)
+        res.json({ message: 'Login successful' });
+        
+
+      } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    })
+
+    // Guest-Login with specific username
+app.get("/Guest/login", async(req, res) => {
 
     const { emailAdd, password } = req.body;
     //console.log(`Inside index.js ${username}`)
@@ -400,10 +420,10 @@ app.post("/Guest/login", async(req, res) => {
 
 
         if (result.rows.length === 0) {
-          return res.status(401).json({ message: 'Authentication failed' });
+          return res.status(401).json({ message: 'Authentication failed' })
         }
     
-        const guest = result.rows[0];
+        const guest = result.rows[0]
         const passwordMatch = await bcrypt.compare(password, guest.pass);
     
         if (!passwordMatch) {

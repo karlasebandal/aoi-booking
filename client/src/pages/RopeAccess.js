@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker"
 import axios from 'axios';
+import "react-datepicker/dist/react-datepicker.css"
 
 //import images
 import ropeAccessImg from '../assets/images/rope-access1.jpg'
@@ -19,31 +20,17 @@ const RopeAccess = () => {
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
   const { isLoggedIn, guestDetails } = useAuth()
-  const { guest, login } = useAuth()
   //const { isLoggedIn } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const [formData, setFormData] = useState({
-    bookingcreated: "",
-    status: "",
-    bookingtype: "",
-    serviceid: "",
-    guestid: "",
-    bookingdate: null,
-    bookingtime: "",
-  })
 
+  //service id number in url bar
   const queryParams = new URLSearchParams(location.search)
   const serviceID = queryParams.get("serviceID") //to get the service ID *ill handle this later
+  console.log(`${serviceID}`)
 
   //When Book button is clicked
   const handleBooking = async () => {
           
-      if (!guest) { // Check if the guest is authenticated
-        setIsLoginModalOpen(true) //pops up login form
-        alert("Please log in to continue booking.");
-        return
-      }
-  
       try {
       // Create the booking data
       const formattedDate = meetingDate.toISOString().split("T")[0];
@@ -51,8 +38,8 @@ const RopeAccess = () => {
         bookingcreated: new Date().toISOString(),
         status: "Pending",
         bookingtype: bookingType,
-        serviceid: serviceID,
-        guestid: guest.guestId, // check on this 
+        serviceid: serviceid,
+        guestid: parseInt(guestDetails.guestid), // check on this 
         bookingdate: formattedDate,
         bookingtime: meetingTime,
       }
@@ -70,6 +57,13 @@ const RopeAccess = () => {
   }
 
   const toggleLoginModal = () => { //pop-ups login modal
+    if (!isLoggedIn) { // Check if the guest is authenticated
+      setIsLoginModalOpen(true) //pops up login form
+      alert("Please log in to continue booking.")
+      console.log("is not logged in yet")
+      return
+    }
+
     setIsLoginModalOpen(!isLoginModalOpen);
   }
 
@@ -77,7 +71,7 @@ const RopeAccess = () => {
     // Perform login API request
     try {
       // Assuming the response contains guest details
-      const response = await axios.post(`http://localhost:5000/Guest/login`, { username, password });
+      const response = await axios.get(`http://localhost:5000/Guest/login`, { username, password });
 
       // Update isLoggedIn and guestDetails
       isLoggedIn(true)
@@ -92,23 +86,23 @@ const RopeAccess = () => {
 
   //for the login modal
   const handleCloseModal = () => {
-    setIsLoginModalOpen(false);
+    setIsLoginModalOpen(false)
   }
 
   // Add event listener to handle Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        handleCloseModal();
+        handleCloseModal()
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown)
 
     // Clean up the event listener when component unmounts
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+      window.removeEventListener("keydown", handleKeyDown)
+    }
   }, [])
 
   return (
@@ -120,6 +114,7 @@ const RopeAccess = () => {
       <div>
         <div className="items-center text-xl mt-5 font-header sm:top-1/2">
           Rope Access Services
+          <p>Service ID: {serviceID} </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -193,7 +188,7 @@ const RopeAccess = () => {
 
             {isLoggedIn ? (
               <button
-                onClick={toggleLoginModal}
+                onClick={handleBooking}
                 className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue" >
                 Book
               </button>
@@ -208,8 +203,7 @@ const RopeAccess = () => {
             {/* ... login modal ... */}
 
             {isLoginModalOpen && ( //opens modal
-              <GuestLogin 
-                onClose={toggleLoginModal} /> //sets to false
+              <GuestLogin onLogin={handleLogin} closeModal={toggleLoginModal}/> //sets to false
             )}
 
 

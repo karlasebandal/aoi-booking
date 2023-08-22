@@ -1,19 +1,23 @@
 //import frameworks and libraries
 import React, { useState } from 'react'
-import { Link } from "react-router-dom" //useNavigate
+import { Link, useNavigate } from "react-router-dom" //useNavigate
 import axios from "axios";
 import { useAuth } from './AuthContext'
+//import { useAuthentication } from './UseAuthentication'
 
-const GuestLogin = ({ closeModal}) => {
-
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+const GuestLogin = ({ closeModal }) => {
 
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
-
-  //const navigate = useNavigate()
   const { login } = useAuth()
+
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+
+  const navigate = useNavigate()
+  //const login = useAuth()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,20 +26,23 @@ const GuestLogin = ({ closeModal}) => {
       const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
       setMessage(response.data.message)
       alert("You are logged in.")
-      login(response.data.guestDetails)
-      closeModal()
-      //navigate('/guestdashboard')
+    
+
+      const userId = response.data.guestDetails.userId
+      navigate('/guestdashboard')
+
+      
+
     } catch (error) {
       console.error("Login error:", error)
       alert("Login error")
     }
   }
 
-  const toggleLoginModal = () => {
-    setIsLoginModalOpen(!isLoginModalOpen)
+  const handleCloseModal = () => {
+    setIsLoginModalOpen(false)
   }
-
-
+ 
   return (
     <>
       <div
@@ -94,6 +101,9 @@ const GuestLogin = ({ closeModal}) => {
                             className="w-full border-2 border-purity p-3 rounded outline-none focus:border-marble-blue"
                           />
                         </div>
+
+                      
+
                       </form>
                     </div>
                   </div>
@@ -109,7 +119,7 @@ const GuestLogin = ({ closeModal}) => {
                   Log-In
                 </button>
                 <button
-                  onClick={toggleLoginModal}
+                  
                   type="button"
                   class="block w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
                   Cancel
@@ -124,14 +134,3 @@ const GuestLogin = ({ closeModal}) => {
 };
 
 export default GuestLogin;
-
-{
-  /* <div className="container mx-auto min-h-screen flex items-center justify-center">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-        
-          <div className=" p-16 rounded shadow-2xl w-2/3">
-            
-            
-          </div>
-        </div> */
-}

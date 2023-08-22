@@ -10,7 +10,6 @@ import Services from "./Services"
 
 //main access
 import HomePage from '../pages/HomePage'
-import Booking from './Booking'
 import RopeAccess from '../pages/RopeAccess'
 import WhiteWaterRafting from '../pages/WhiteWaterRafting'
 
@@ -36,7 +35,6 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
           
           <Route path="/admin" element={<UserLogin />} />

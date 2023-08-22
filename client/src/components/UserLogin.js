@@ -19,8 +19,8 @@ const UserLogin = () => {
       try {
         const response = await axios.post(`http://localhost:5000/User/login`, {username, password})
         setMessage(response.data.message)
-        
-        navigate('/userdashboard')
+        console.log(`${username}`)
+        navigate('/userdashboard', username)
        
 
       } catch (error) {
