@@ -22,6 +22,9 @@ import UserDashboard from "./UserDashboard"
 import GuestDashboard from "./GuestDashboard"
 import GuestRegistration from "./GuestRegistration"
 
+//for testing
+//import TestLogin from '../for-testing/TestLogin'
+
 function App() {
   return (
 
@@ -43,6 +46,7 @@ function App() {
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/guestregistration" element={<GuestRegistration />} />
           <Route path="/guestdashboard" element={<GuestDashboard />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route path="/ropeaccess" element={<RopeAccess />} />
           <Route path="/whitewaterrafting" element={<WhiteWaterRafting />} />

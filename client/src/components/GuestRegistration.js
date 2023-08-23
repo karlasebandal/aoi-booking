@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const GuestRegistration = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const GuestRegistration = () => {
         contactNum: '',
         pass: ''
       })
+    const navigate = useNavigate()
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +18,7 @@ const handleSubmit = async (e) => {
     try {
         await axios.post('http://localhost:5000/Guest', formData)
         alert('You have successfully registered.');
+        navigate('/')
     } catch (error) {
         console.error(error);
         alert('Email address is already in use.');

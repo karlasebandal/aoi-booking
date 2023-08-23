@@ -26,21 +26,17 @@ const HomePage = () => {
   }
 
   const handleRedirect = () => {
+    
+    const [serviceID, serviceName] = selectedServiceID.split('|');
+    console.log('Selected Service ID:', serviceID);
+    console.log('Selected Service Name:', serviceName);
 
-    if (selectedServiceID){
-      const service = selectedServiceID
-      const modifiedService = service.replace(/\s+/g, '') // This will remove all spaces
-      navigate(modifiedService)
-      console.log(`${selectedServiceID}`)
-      
+    if (serviceID){
+      const modifiedService = serviceName.replace(/\s+/g, '') // This will remove all spaces
+      navigate(modifiedService, { state: { serviceID } })
     }
    
   }
-
-  // const getServiceID = () => {
-  //   const selectedService = services.find(service => service.serviceID === selectedServiceID);
-  //   return selectedService ? selectedService.serviceID : null;
-  // }
 
   return (
 
@@ -85,7 +81,7 @@ const HomePage = () => {
             class="bg-navy-blue border hover:bg-marble-blue border-marble-blue text-purity text-sm rounded-lg focus:ring-marble-blue focus:border-marble-blue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="#" class="hover:bg-marble-blue">Select an option</option>
               {services.map(service => (
-                <option class="hover:bg-marble-blue" key={service.serviceID} value={service.serviceID}
+                <option class="hover:bg-marble-blue" key={service.serviceid} value={`${service.serviceid}|${service.name}`}
                 >{service.name}</option>
               ))}
               

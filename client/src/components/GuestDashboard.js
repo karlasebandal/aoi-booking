@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom'
 import axios from 'axios';
 
 const GuestDashboard = () => {
   const [guestData, setGuestData] = useState(null)
+  const { emailAdd } = location.state || {};
 
-  useEffect(() => {
-    // Fetch user data after component mounts
-    const fetchGuestData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/Guest/${guestId}`) // Replace with the correct API endpoint
-        setGuestData(response.data)
-       // console.log(`Guest dashboard user id: ${userId}`)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-      }
-    };
-
-    fetchGuestData();
-  }, []); // Empty dependency array means this effect runs only once
 
   return (
     <div className="mt-20">
-      {guestData ? (
+      {emailAdd ? (
         <div>
-          <h2>Welcome, {guestData.firstName}!</h2>
+          <h2>Welcome, {emailAdd}!</h2>
           {/* Display personalized content based on user data */}
         </div>
       ) : (

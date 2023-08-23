@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const UserRegistration = () => {
   const [formData, setFormData] = useState({
@@ -8,19 +9,21 @@ const UserRegistration = () => {
     emailAdd: "",
     role: "",
     pass: "",
-  });
+  })
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await axios.post("http://localhost:5000/User", formData);
-      alert("You have successfully registered.");
+      alert("You have successfully registered.")
+      navigate('/')
     } catch (error) {
       console.error(error);
-      alert("Username is already in use.");
+      alert("Username is already in use.")
     }
-  };
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target; // Fixed destructuring here

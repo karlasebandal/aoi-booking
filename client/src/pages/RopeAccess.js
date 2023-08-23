@@ -15,18 +15,13 @@ import GuestLogin from '../components/GuestLogin';
 
 const RopeAccess = () => {
   const location = useLocation()
+  const { serviceID } = location.state || {}
  // const history = useHistory()
   const [meetingDate, setMeetingDate] = useState(new Date())
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
-  const { isLoggedIn, guestDetails } = useAuth()
-  //const { isLoggedIn } = useAuth()
+  const { isLoggedIn, guestDetails, login } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-
-  //service id number in url bar
-  const queryParams = new URLSearchParams(location.search)
-  const serviceID = queryParams.get("serviceID") //to get the service ID *ill handle this later
-  console.log(`${serviceID}`)
 
   //When Book button is clicked
   const handleBooking = async () => {
@@ -38,7 +33,7 @@ const RopeAccess = () => {
         bookingcreated: new Date().toISOString(),
         status: "Pending",
         bookingtype: bookingType,
-        serviceid: serviceid,
+        serviceid: serviceID,
         guestid: parseInt(guestDetails.guestid), // check on this 
         bookingdate: formattedDate,
         bookingtime: meetingTime,
@@ -60,27 +55,26 @@ const RopeAccess = () => {
     if (!isLoggedIn) { // Check if the guest is authenticated
       setIsLoginModalOpen(true) //pops up login form
       alert("Please log in to continue booking.")
-      console.log("is not logged in yet")
       return
     }
 
     setIsLoginModalOpen(!isLoginModalOpen);
   }
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (emailAdd, password) => {
     // Perform login API request
     try {
       // Assuming the response contains guest details
-      const response = await axios.get(`http://localhost:5000/Guest/login`, { username, password });
-
+      const response = await axios.get(`http://localhost:5000/Guest/login`, { emailAdd, password });
+      console.log(`handle login: ${emailAdd}`)
       // Update isLoggedIn and guestDetails
-      isLoggedIn(true)
-      guestDetails(response.data.guestDetails);
+      login(response.data.guestDetails)
+      //guestDetails(response.data.guestDetails);
 
       // Close the login modal after successful login
       handleCloseModal()
     } catch (error) {
-      // Handle login error
+      console.log(`Login Error in handleLogin`)
     }
   }
 
@@ -106,21 +100,31 @@ const RopeAccess = () => {
   }, [])
 
   return (
-    <div class="container mx-auto m-20">
+    <div className="container mx-auto m-20">
       <div>
-        <img src={ropeAccessImg2} class="static rounded-xl" alt="Rafting" />
+        <img src={ropeAccessImg2} className="static rounded-xl" alt="Rafting" />
       </div>
 
       <div>
         <div className="items-center text-xl mt-5 font-header sm:top-1/2">
           Rope Access Services
           <p>Service ID: {serviceID} </p>
+          <p>User ID:  </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {guestDetails ? (
+              <div>
+                <p>Welcome, {guestDetails.firstname} {guestDetails.lastname}!</p>
+                <p>Guest ID: {guestDetails.guestid}</p>
+              </div>
+            ) : (
+              <p>Loading user data...</p>
+            )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Intro Here */}
-          <div class="col-span-12">
-            <div class="flex justify-center text-xl">
+          <div className="col-span-12">
+            <div className="flex justify-center text-xl">
               <div className="items-center text-md drop-shadow-xl sm:top-1/2">
                 Rope access technicians are professionals who use specialized
                 techniques and equipment to access difficult-to-reach areas,
@@ -142,37 +146,37 @@ const RopeAccess = () => {
         <div className="items-center text-sm pl-3 pt-3 mt-5 font-header sm:top-1/2 rounded-xl bg-purity">
           {/* Booking Details */}
 
-          <div class="w-12/12  pl-5">
-            <p class="my-3 w-4/12">Select a meeting mode</p>
+          <div className="w-12/12  pl-5">
+            <p className="my-3 w-4/12">Select a meeting mode</p>
 
             <button
-              class="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+              className="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               onClick={() => setBookingType("Online")}
               value="Online" >
               Online
             </button>
 
             <button
-              class="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+              className="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               onClick={() => setBookingType("Face to Face")}
               value="Face to Face">
               Face to Face
             </button>
 
             <button
-              class="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+              className="bg-rescue-orange text-navy-blue mr-3 p-3 mb-2 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               onClick={() => setBookingType("Phone Call")}
               value="Phone Call">
               Phone Call
             </button>
 
-            <p class="my-3 w-4/12">Select Date</p>
+            <p className="my-3 w-4/12">Select Date</p>
             <DatePicker
               className="flex mr-3 rounded-md"
               selected={meetingDate}
               onChange={(date) => setMeetingDate(date)} />
 
-            <p class="my-3 w-4/12">Select Time</p>
+            <p className="my-3 w-4/12">Select Time</p>
 
             <select
               value={meetingTime}
@@ -203,7 +207,7 @@ const RopeAccess = () => {
             {/* ... login modal ... */}
 
             {isLoginModalOpen && ( //opens modal
-              <GuestLogin onLogin={handleLogin} closeModal={toggleLoginModal}/> //sets to false
+              <GuestLogin onLogin={handleLogin} closeModal={handleCloseModal}/> //sets to false
             )}
 
 

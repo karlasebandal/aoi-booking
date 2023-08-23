@@ -5,14 +5,12 @@ import axios from "axios";
 import { useAuth } from './AuthContext'
 //import { useAuthentication } from './UseAuthentication'
 
-const GuestLogin = ({ closeModal }) => {
+const GuestLogin = ({ onLogin, closeModal }) => {
 
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
-  const { login } = useAuth()
-
-
+  //const { isLoggedIn, guestDetails } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
 
@@ -24,14 +22,16 @@ const GuestLogin = ({ closeModal }) => {
     
     try {
       const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
-      setMessage(response.data.message)
-      alert("You are logged in.")
-    
-
-      const userId = response.data.guestDetails.userId
-      navigate('/guestdashboard')
-
-      
+      const notif = setMessage(response.data.message)
+      //alert(notif)
+      console.log(`You are logged in.`)
+      //navigate('/guestdashboard', { state: { emailAdd }})
+      onLogin(emailAdd, password)
+      //useAuth details
+      // isLoggedIn(true)
+      // guestDetails(response.data.guestDetails)
+      // handleCloseModal()
+      closeModal()
 
     } catch (error) {
       console.error("Login error:", error)

@@ -14,7 +14,7 @@ app.post("/User", async(req, res) => {
 
   try {
     // Check if the userName is already in use
-    const existingUser = await pool.query("SELECT * FROM \"User\" WHERE userName = $1", [userName]);
+    const existingUser = await pool.query('SELECT * FROM \"User\" WHERE userName = $1', [userName]);
 
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ message: 'Username is not available' })
@@ -22,10 +22,10 @@ app.post("/User", async(req, res) => {
 
     const hashedPassword = await bcrypt.hash(pass, 10)
     const newUser = await pool.query(
-      "INSERT INTO \"User\" (name, userName, emailAdd, role, pass) VALUES($1, $2, $3, $4, $5)",
+      'INSERT INTO \"User\" (name, username, emailadd, role, pass) VALUES($1, $2, $3, $4, $5)',
       [name, userName, emailAdd, role, hashedPassword]
-    );
-    res.json(newUser.rows);
+    )
+    res.json(newUser.rows)
 
   } catch (err) {
     console.error(err.message)
@@ -76,12 +76,12 @@ app.post("/guest", async(req, res) => {
 // Create Booking
 app.post("/booking", async(req, res) => {
     try {
-        const { status, bookingtype, serviceid, guestid, bookingdate } = req.body
+        const { status, bookingtype, serviceid, guestid, bookingdate, bookingtime } = req.body
         const bookingCreated = new Date().toISOString()
 
         const newBooking = await pool.query(
-            "INSERT INTO booking (bookingCreated, status, bookingtype, serviceid, guestid, bookingdate) VALUES($1, $2, $3, $4, $5, $6) RETURNING *", 
-        [bookingCreated, status, bookingtype, serviceid, guestid, bookingdate]
+            "INSERT INTO booking (bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", 
+        [bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime]
         );
         res.json(newBooking.rows);
 
@@ -126,7 +126,7 @@ app.post("/paymentmode", async(req, res) => {
 app.get("/User", async(req, res) => {
     try {
         const allUsers = await pool.query(
-            "SELECT * FROM \"User\"");
+            'SELECT * FROM \"User\"')
         res.json(allUsers.rows);
     
     } catch (err) {
@@ -139,7 +139,7 @@ app.get("/User/:userId", async(req, res) => {
     try {
         const { userid } = req.params;
         const allUsers = await pool.query(
-            "SELECT * FROM \"User\" WHERE userid = $1", [userid]);
+            'SELECT * FROM \"User\" WHERE userid = $1', [userid]);
         res.json(allUsers.rows);
     
     } catch (err) {
@@ -148,10 +148,22 @@ app.get("/User/:userId", async(req, res) => {
 })
 
 //Get Services
-app.get("/service", async(req, res) => {
+app.get("/Service", async(req, res) => {
     try {
         const allServices = await pool.query(
             'SELECT * FROM service');
+        res.json(allServices.rows);
+    
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+//get service by id //updated as of 4:39
+app.get("/Service/:serviceId", async(req, res) => {
+    try {
+        const allServices = await pool.query(
+            'SELECT * FROM Service WHERE serviceid = $1', [serviceid]);
         res.json(allServices.rows);
     
     } catch (err) {
@@ -216,7 +228,7 @@ app.put("/User/:userID", async(req, res) => {
         const { userID } = req.params;
         const { name, username, emailadd, role, pass } = req.body;
         const updateUser = await pool.query(
-            "UPDATE \"User\" SET name = $1, username = $2, emailadd = $3, role = $4, pass = $5 WHERE userID = $6",
+            'UPDATE \"User\" SET name = $1, username = $2, emailadd = $3, role = $4, pass = $5 WHERE userID = $6',
         [name, username, emailadd, role, pass, userID]);
 
         res.json("User is logged in");
@@ -379,18 +391,17 @@ app.post("/User/login", async(req, res) => {
 app.post("/Guest/login", async(req, res) => {
 
     const { emailAdd, password } = req.body;
-    console.log(`guest login postmethod: ${emailAdd}`)
+    //console.log(`guest login postmethod: ${emailAdd}`)
 
     try {
-        const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);
-        
-
+        const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);      
 
         if (result.rows.length === 0) {
           return res.status(401).json({ message: 'Authentication failed' })
         }
     
         const guest = result.rows[0]
+       // console.log(`${guest.firstName}`)
         const passwordMatch = await bcrypt.compare(password, guest.pass);
     
         if (!passwordMatch) {
@@ -412,11 +423,11 @@ app.post("/Guest/login", async(req, res) => {
 app.get("/Guest/login", async(req, res) => {
 
     const { emailAdd, password } = req.body;
-    //console.log(`Inside index.js ${username}`)
+    console.log(`Inside get/guest/login.js ${emailAdd}`)
 
     try {
-        const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);
-        //console.log(`Inside try: ${username}`)
+        const result = await pool.query(`SELECT * FROM Guest WHERE emailadd = $1`, [emailAdd]);
+        console.log(`Inside try: ${emailAdd}`)
 
 
         if (result.rows.length === 0) {
@@ -444,6 +455,6 @@ app.get("/Guest/login", async(req, res) => {
 
 const PORT = 5000
 app.listen(PORT, () => {
-    console.log("Server has started on port 5000");
-});
+    console.log("Server has started on port 5000")
+})
 
