@@ -1,6 +1,6 @@
 //import libraries and framework
 import React, { useState, useEffect } from 'react'
-import { useLocation, useHistory, Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import DatePicker from "react-datepicker"
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css"
@@ -20,12 +20,12 @@ const RopeAccess = () => {
   const [meetingDate, setMeetingDate] = useState(new Date())
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
-  const { isLoggedIn, guestDetails, login } = useAuth()
+  const { isLoggedIn, guestId } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   //When Book button is clicked
   const handleBooking = async () => {
-    console.log('guestDetails:', guestDetails)  
+      console.log(`RopeAccess Guest id: ${guestId}`)
       try {
       // Create the booking data
       const formattedDate = meetingDate.toISOString().split("T")[0];
@@ -34,7 +34,7 @@ const RopeAccess = () => {
         status: "Pending",
         bookingtype: bookingType,
         serviceid: serviceID,
-        guestid: parseInt(guestDetails.guestid), // check on this 
+        guestid: parseInt(guestId), // check on this 
         bookingdate: formattedDate,
         bookingtime: meetingTime,
       }
@@ -103,8 +103,8 @@ const RopeAccess = () => {
 
   //pulling out details
   useEffect(() => {
-    console.log('Guest details in RopeAccess:', guestDetails);
-  }, [guestDetails]);
+    console.log('Guest details in RopeAccess:', guestId);
+  }, [guestId]);
   return (
     <div className="container mx-auto m-20">
       <div>
@@ -118,10 +118,10 @@ const RopeAccess = () => {
           <p>User ID:  </p>
         </div>
 
-        {guestDetails ? (
+        {isLoggedIn ? (
               <div>
-                <p>Welcome, {guestDetails.firstname} {guestDetails.lastname}!</p>
-                <p>Guest ID: {guestDetails.guestid}</p>
+                <p>Welcome!</p>
+                <p>Guest ID: {guestId}</p>
               </div>
             ) : (
               <p>Loading user data...</p>
@@ -206,13 +206,13 @@ const RopeAccess = () => {
                 
               
             ) : (
-              //<Link to='/login'>
+              
                 <button
                   onClick={toggleLoginModal} //set to true
                   className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue">
                   Book
                 </button>
-              //</Link>
+              
             )}
 
             {/* ... login modal ... */}

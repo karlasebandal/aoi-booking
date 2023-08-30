@@ -63,10 +63,12 @@ app.post("/guest", async(req, res) => {
 
         const hashedPassword = await bcrypt.hash(pass, 10)
         const newGuest = await pool.query(
-            "INSERT INTO Guest (firstName, lastName, emailAdd, contactNum, pass) VALUES($1, $2, $3, $4, $5) RETURNING *", 
+            "INSERT INTO Guest (firstName, lastName, emailAdd, contactNum, pass) VALUES($1, $2, $3, $4, $5) RETURNING guestid", 
         [firstName, lastName, emailAdd, contactNum, hashedPassword]
         );
-        res.json(newGuest.rows);
+        //res.json(newGuest.rows)
+        const guestId = newGuest.rows[0].guestid;
+        res.json({ guestId }); // Send the guestId as response
 
     } catch (err) {
         console.error(err.message);
@@ -391,7 +393,7 @@ app.post("/User/login", async(req, res) => {
 app.post("/Guest/login", async(req, res) => {
 
     const { emailAdd, password } = req.body;
-    //console.log(`guest login postmethod: ${emailAdd}`)
+    console.log(`guest login postmethod: ${emailAdd}`)
 
     try {
         const result = await pool.query('SELECT * FROM Guest WHERE emailAdd = $1', [emailAdd]);      
@@ -401,6 +403,9 @@ app.post("/Guest/login", async(req, res) => {
         }
     
         const guest = result.rows[0]
+        const guestId = guest.guestid
+        console.log(`guest id is ${guestId}`)
+        
        // console.log(`${guest.firstName}`)
         const passwordMatch = await bcrypt.compare(password, guest.pass);
     
@@ -410,14 +415,14 @@ app.post("/Guest/login", async(req, res) => {
         
         //console.log(`${password}`);
         //console.log(`${passwordMatch}`)
-        res.json({ message: 'Login successful' });
-        
+        res.json({ message: 'Login successful', guestId });
+
 
       } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Internal server error' });
-      }
-    })
+    }
+})
 
     // Guest-Login with specific username
 app.get("/Guest/login", async(req, res) => {

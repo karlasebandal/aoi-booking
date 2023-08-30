@@ -1,16 +1,17 @@
 //import frameworks and libraries
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom" //useNavigate
+import { useNavigate, Link } from "react-router-dom" 
 import axios from "axios";
 import { useAuth } from './AuthContext'
 //import { useAuthentication } from './UseAuthentication'
 
 const GuestLogin = () => {
-
+  const nav = useNavigate()
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
+  //const [guestId, setGuestid] = useState()
   const [message, setMessage] = useState("")
-  const { isLoggedIn, login } = useAuth()
+  const { setIsLoggedIn, setGuestId } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   // Handle Login Details
@@ -19,21 +20,25 @@ const GuestLogin = () => {
     
     try {
       const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
-      const notif = setMessage(response.data.message)
-      //alert(notif)
-      console.log(`You are logged in.`)
+  
+      console.log(response.data.guestId)
+      setGuestId(response.data.guestId)
+      setIsLoggedIn(true)
+
       //navigate('/guestdashboard', { state: { emailAdd }})
       // Update isLoggedIn and guestDetails
-      login(response.data.guestDetails)
+      //login(response.data.guestid)
+      
       //useAuth details
-      // isLoggedIn(true)
-      // guestDetails(response.data.guestDetails)
+      //  isLoggedIn(true)
+      //guestDetails(response.data.guestId)
+
       handleCloseModal()
       
 
     } catch (error) {
       console.error("Login error:", error)
-      alert("Login error")
+      alert("Login error catch")
     }
   }
 
@@ -139,9 +144,7 @@ const GuestLogin = () => {
                   Cancel
                 </button>
 
-                {isLoggedIn && ( 
-                  <p> You are logged in</p>
-                )}  
+            
               </div>
             </div>
           </div>
