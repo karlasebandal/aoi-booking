@@ -25,17 +25,6 @@ const GuestLogin = () => {
       setGuestId(response.data.guestId)
       setIsLoggedIn(true)
 
-      //navigate('/guestdashboard', { state: { emailAdd }})
-      // Update isLoggedIn and guestDetails
-      //login(response.data.guestid)
-      
-      //useAuth details
-      //  isLoggedIn(true)
-      //guestDetails(response.data.guestId)
-
-      handleCloseModal()
-      
-
     } catch (error) {
       console.error("Login error:", error)
       alert("Login error catch")
