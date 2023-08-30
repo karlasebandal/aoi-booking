@@ -20,9 +20,7 @@ const Footer = () => {
             <li>
                 <Link to="/admin" className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
             </li>
-            <li>
-                <Link to="/login" className="text-rescue-orange mr-4 hover:underline md:mr-6">Log-in</Link>
-            </li>
+            
             <li>
                 <Link to="/contact" className="text-rescue-orange hover:underline">Contact
                 </Link>

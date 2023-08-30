@@ -1,15 +1,57 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from "./AuthContext";
 
 import "../assets/styles/NavBar.css";
 import logo from "../assets/images/logo-type.svg";
+import GuestLogin from '../components/GuestLogin'
 
 //import HomePage from '../pages/HomePage'
 //stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 const NavBar = () => {
+  const { isLoggedIn, logout } = useAuth()
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   
+  const handleLogout = () => {
+    logout()
+    // You can also add code to navigate the user to the login page or another route after logout if needed
+  }
 
+  const handleLogin = () => {
+
+  }
+
+  const toggleLoginModal = () => {
+    //pop-ups login modal
+    if (!isLoggedIn) {
+      // Check if the guest is authenticated
+      setIsLoginModalOpen(true); //pops up login form
+      return
+    }
+
+    setIsLoginModalOpen(!isLoginModalOpen)
+
+  }
+
+  const handleCloseModal = () => {
+    setIsLoginModalOpen(false)
+  }
+
+    // Add event listener to handle Escape key press
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+          handleCloseModal()
+        }
+      }
+  
+      window.addEventListener("keydown", handleKeyDown)
+  
+      // Clean up the event listener when component unmounts
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown)
+      }
+    }, [])
 
   return (
     <div>
@@ -24,6 +66,31 @@ const NavBar = () => {
               className="text-white bg-rescue-orange hover:bg-rescue-orange-dark focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium font-header rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               BOOK NOW!
             </button>
+
+            {isLoggedIn ? (
+              <div>
+                <button
+                  onClick={handleLogout}
+                  type={"button"}
+                  className="text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium font-header rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={toggleLoginModal}
+                  type={"button"}
+                  className="text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium font-header rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Login
+                </button>
+              </div>
+            )}
+
+            {isLoginModalOpen && ( //opens modal
+              <GuestLogin/> //sets to false
+            )}
+
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
