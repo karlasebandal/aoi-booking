@@ -78,12 +78,12 @@ app.post("/guest", async(req, res) => {
 // Create Booking
 app.post("/booking", async(req, res) => {
     try {
-        const { status, bookingtype, serviceid, guestid, bookingdate, bookingtime } = req.body
+        const { status, bookingtype, serviceid, guestid, bookingdate, bookingtime, numguests } = req.body
         const bookingCreated = new Date().toISOString()
 
         const newBooking = await pool.query(
-            "INSERT INTO booking (bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *", 
-        [bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime]
+            "INSERT INTO booking (bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime, numguests) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *", 
+        [bookingCreated, status, bookingtype, serviceid, guestid, bookingdate, bookingtime, numguests]
         );
         res.json(newBooking.rows);
 

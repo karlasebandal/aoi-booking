@@ -21,6 +21,7 @@ const RopeAccess = () => {
   const [bookingType, setBookingType] = useState("")
   const { isLoggedIn, guestId } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [numOfGuests, setNumOfGuests] = useState(1)
 
   //When Book button is clicked
   const handleBooking = async () => {
@@ -33,9 +34,10 @@ const RopeAccess = () => {
         status: "Pending",
         bookingtype: bookingType,
         serviceid: serviceID,
-        guestid: parseInt(guestId), // check on this 
+        guestid: parseInt(guestId), 
         bookingdate: formattedDate,
         bookingtime: meetingTime,
+        numguests: parseInt(numOfGuests),
       }
 
       // Send the data to the backend API
@@ -58,7 +60,15 @@ const RopeAccess = () => {
     }
 
     setIsLoginModalOpen(!isLoginModalOpen)
-    handleBooking()
+    handleBooking() //check this 
+  }
+
+  const handleIncrement = () => {
+    setNumOfGuests(numOfGuests + 1)
+  }
+
+  const handleDecrement = () => {
+    setNumOfGuests(numOfGuests - 1)
   }
 
   // const onLogin = async (emailAdd, password) => {
@@ -115,17 +125,8 @@ const RopeAccess = () => {
         <div className="items-center text-xl mt-5 font-header sm:top-1/2">
           Rope Access Services
           <p>Service ID: {serviceID} </p>
-          <p>User ID:  </p>
+          <p>User ID: {guestId} </p>
         </div>
-
-        {isLoggedIn ? (
-              <div>
-                <p>Welcome!</p>
-                <p>Guest ID: {guestId}</p>
-              </div>
-            ) : (
-              <p>Loading user data...</p>
-            )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Intro Here */}
@@ -151,6 +152,25 @@ const RopeAccess = () => {
           {/* Booking Details */}
 
           <div className="w-12/12  pl-5">
+          <div className="items-center w-8/12 my-5">Number of Guests</div>
+
+          <div class="w-8/12 my-3">
+            <div className="inline-flex justify-center align-middle">
+              <button
+                onClick={handleIncrement}
+                class="bg-rescue-orange text-navy-blue p-3 mr-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+              >
+                +
+              </button>
+              <div class="mx-3">{numOfGuests}</div>
+              <button
+                onClick={handleDecrement}
+                class="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+              >
+                -
+              </button>
+            </div>
+            </div>
             <p className="my-3 w-4/12">Select a meeting mode</p>
 
             <button

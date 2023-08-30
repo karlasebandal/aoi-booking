@@ -11,22 +11,22 @@ import { useAuth } from "../components/AuthContext";
 import GuestLogin from "../components/GuestLogin";
 
 const RopeAccess = () => {
-  const location = useLocation();
-  const { isLoggedIn, guestId } = useAuth();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const { serviceID } = location.state || {};
+  const location = useLocation()
+  const { isLoggedIn, guestId } = useAuth()
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const { serviceID } = location.state || {}
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [meetingTime, setMeetingTime] = useState("");
-  const [numOfGuests, setNumOfGuests] = useState(1);
+  const [numOfGuests, setNumOfGuests] = useState(5)
 
   const handleIncrement = () => {
-    setNumOfGuests(numOfGuests + 1);
-  };
+    setNumOfGuests(numOfGuests + 1)
+  }
 
   const handleDecrement = () => {
-    setNumOfGuests(numOfGuests - 1);
-  };
+    setNumOfGuests(numOfGuests - 1)
+  }
 
   //When Book button is clicked
   const handleBooking = async () => {
@@ -43,6 +43,7 @@ const RopeAccess = () => {
         guestid: parseInt(guestId), // check on this
         bookingdate: formattedDate,
         bookingtime: meetingTime,
+        numguests: parseInt(numOfGuests),
       }
 
       // Send the data to the backend API
@@ -68,6 +69,10 @@ const RopeAccess = () => {
 
     setIsLoginModalOpen(!isLoginModalOpen)
 
+  }
+
+  const handleCloseModal = () => {
+    setIsLoginModalOpen(false)
   }
 
     // Add event listener to handle Escape key press
