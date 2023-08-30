@@ -25,7 +25,7 @@ const RopeAccess = () => {
 
   //When Book button is clicked
   const handleBooking = async () => {
-          
+    console.log('guestDetails:', guestDetails)  
       try {
       // Create the booking data
       const formattedDate = meetingDate.toISOString().split("T")[0];
@@ -101,6 +101,10 @@ const RopeAccess = () => {
     }
   }, [])
 
+  //pulling out details
+  useEffect(() => {
+    console.log('Guest details in RopeAccess:', guestDetails);
+  }, [guestDetails]);
   return (
     <div className="container mx-auto m-20">
       <div>
