@@ -1,6 +1,6 @@
 //import libraries and framework
 import React, { useState, useEffect } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 import DatePicker from "react-datepicker"
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css"
@@ -58,25 +58,27 @@ const RopeAccess = () => {
       return
     }
 
-    setIsLoginModalOpen(!isLoginModalOpen);
+    setIsLoginModalOpen(!isLoginModalOpen)
+    handleBooking()
   }
 
-  const handleLogin = async (emailAdd, password) => {
-    // Perform login API request
-    try {
-      // Assuming the response contains guest details
-      const response = await axios.get(`http://localhost:5000/Guest/login`, { emailAdd, password });
-      console.log(`handle login: ${emailAdd}`)
-      // Update isLoggedIn and guestDetails
-      login(response.data.guestDetails)
-      //guestDetails(response.data.guestDetails);
+  // const onLogin = async (emailAdd, password) => {
 
-      // Close the login modal after successful login
-      handleCloseModal()
-    } catch (error) {
-      console.log(`Login Error in handleLogin`)
-    }
-  }
+  //   //Perform login API request
+  //   try {
+  //     // Assuming the response contains guest details
+  //     const response = await axios.get(`http://localhost:5000/Guest/login`, { emailAdd, password });
+  //     console.log(`handle login: ${emailAdd}`)
+      
+  //     // Update isLoggedIn and guestDetails
+  //     login(response.data.guestDetails);
+
+  //     // Close the login modal after successful login
+  //     handleCloseModal()
+  //   } catch (error) {
+  //     console.log(`Login Error in handleLogin`)
+  //   }
+  // }
 
   //for the login modal
   const handleCloseModal = () => {
@@ -191,23 +193,28 @@ const RopeAccess = () => {
             </select>
 
             {isLoggedIn ? (
-              <button
-                onClick={handleBooking}
-                className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue" >
-                Book
-              </button>
+              
+                <button
+                  onClick={handleBooking}
+                  className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue" >
+                  Book
+                </button>
+                
+              
             ) : (
-              <button
-                onClick={toggleLoginModal} //set to true
-                className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue">
-                Book
-              </button>
+              //<Link to='/login'>
+                <button
+                  onClick={toggleLoginModal} //set to true
+                  className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg hover:ring-navy-blue">
+                  Book
+                </button>
+              //</Link>
             )}
 
             {/* ... login modal ... */}
 
             {isLoginModalOpen && ( //opens modal
-              <GuestLogin onLogin={handleLogin} closeModal={handleCloseModal}/> //sets to false
+              <GuestLogin/> //sets to false
             )}
 
 

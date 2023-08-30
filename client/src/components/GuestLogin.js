@@ -1,22 +1,19 @@
 //import frameworks and libraries
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom" //useNavigate
 import axios from "axios";
 import { useAuth } from './AuthContext'
 //import { useAuthentication } from './UseAuthentication'
 
-const GuestLogin = ({ onLogin, closeModal }) => {
+const GuestLogin = () => {
 
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
   const [message, setMessage] = useState("")
-  //const { isLoggedIn, guestDetails } = useAuth()
+  const { isLoggedIn, login } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
-
-  const navigate = useNavigate()
-  //const login = useAuth()
-
+  // Handle Login Details
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -26,12 +23,13 @@ const GuestLogin = ({ onLogin, closeModal }) => {
       //alert(notif)
       console.log(`You are logged in.`)
       //navigate('/guestdashboard', { state: { emailAdd }})
-      onLogin(emailAdd, password)
+      // Update isLoggedIn and guestDetails
+      login(response.data.guestDetails)
       //useAuth details
       // isLoggedIn(true)
       // guestDetails(response.data.guestDetails)
-      // handleCloseModal()
-      closeModal()
+      handleCloseModal()
+      
 
     } catch (error) {
       console.error("Login error:", error)
@@ -39,10 +37,25 @@ const GuestLogin = ({ onLogin, closeModal }) => {
     }
   }
 
+  //Handles modal
   const handleCloseModal = () => {
-    setIsLoginModalOpen(false)
+    setIsLoginModalOpen(false) // Close the modal
   }
- 
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setIsLoginModalOpen(false) // Close the modal on Escape key press
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
+
   return (
     <>
       <div
@@ -118,12 +131,17 @@ const GuestLogin = ({ onLogin, closeModal }) => {
                   type="submit">
                   Log-In
                 </button>
+
                 <button
-                  
+                  onClick={handleCloseModal}
                   type="button"
                   class="block w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
                   Cancel
                 </button>
+
+                {isLoggedIn && ( 
+                  <p> You are logged in</p>
+                )}  
               </div>
             </div>
           </div>
