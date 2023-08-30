@@ -2,21 +2,20 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import DatePicker from "react-datepicker"
-import axios from 'axios';
+import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css"
 
-//import images
+//import image(s)
 import ropeAccessImg from '../assets/images/rope-access1.jpg'
 import ropeAccessImg2 from '../assets/images/rope-access2.jpg'
 
 //import components
 import { useAuth } from '../components/AuthContext'
-import GuestLogin from '../components/GuestLogin';
+import GuestLogin from '../components/GuestLogin'
 
 const RopeAccess = () => {
   const location = useLocation()
   const { serviceID } = location.state || {}
- // const history = useHistory()
   const [meetingDate, setMeetingDate] = useState(new Date())
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
@@ -28,7 +27,7 @@ const RopeAccess = () => {
       console.log(`RopeAccess Guest id: ${guestId}`)
       try {
       // Create the booking data
-      const formattedDate = meetingDate.toISOString().split("T")[0];
+      const formattedDate = meetingDate.toISOString().split("T")[0]
       const newBooking = {
         bookingcreated: new Date().toISOString(),
         status: "Pending",
@@ -91,7 +90,7 @@ const RopeAccess = () => {
       if (e.key === "Escape") {
         handleCloseModal()
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKeyDown)
 
@@ -104,11 +103,12 @@ const RopeAccess = () => {
   //pulling out details
   useEffect(() => {
     console.log('Guest details in RopeAccess:', guestId);
-  }, [guestId]);
+  }, [guestId])
+
   return (
     <div className="container mx-auto m-20">
       <div>
-        <img src={ropeAccessImg2} className="static rounded-xl" alt="Rafting" />
+        <img src={ropeAccessImg2} className="static rounded-xl" alt="Rope Access Technicians" />
       </div>
 
       <div>
@@ -142,9 +142,7 @@ const RopeAccess = () => {
           </div>
 
           {/* Booking Card - right panel
-          <div class="flex justify-center text-6xlrounded-xl p-6">
-              
-          </div> */}
+          <div class="flex justify-center text-6xlrounded-xl p-6"></div> */}
         </div>
       </div>
 
@@ -224,6 +222,7 @@ const RopeAccess = () => {
 
           </div>
         </div>
+        <div class="flex justify-center text-6xl rounded-xl p-6"></div>
       </div>
     </div>
   
