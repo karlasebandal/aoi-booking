@@ -16,16 +16,28 @@ const RopeAccess = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { serviceID } = location.state || {}
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [meetingTime, setMeetingTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [bookingData, setBookingData] = useState([])
+  const [meetingTime, setMeetingTime] = useState("")
   const [numOfGuests, setNumOfGuests] = useState(5)
 
+  const currentDate = new Date()
+
   const handleIncrement = () => {
-    setNumOfGuests(numOfGuests + 1)
+    if (numOfGuests >= 5 && numOfGuests <= 42){
+      setNumOfGuests(numOfGuests + 1)
+    }else{
+      alert('Minimum of 5 and maximum of 43 guests only per trip')
+    }
   }
 
   const handleDecrement = () => {
-    setNumOfGuests(numOfGuests - 1)
+    if (numOfGuests > 5){
+      setNumOfGuests(numOfGuests - 1)
+    }else{
+      alert('Minimum of 5 guests')
+    }
+    
   }
 
   //When Book button is clicked
@@ -91,6 +103,40 @@ const RopeAccess = () => {
       }
     }, [])
 
+
+    useEffect(() => {
+      axios
+        .get(`http://localhost:5000/Booking/${serviceID}`)
+        .then((response) => setBookingData(response.data))
+        .catch((error) => console.error('Error fetching data:', error));
+    }, [serviceID])
+
+    //Handle Date Change
+    const handleDateChange = (date) => {
+      if (!isDateFullyBooked(date)) {
+        setSelectedDate(date);
+      }
+    }
+
+    //Date fullybooked
+    const isDateFullyBooked = (date) => {
+      const selectedDateBooking = bookingData.find((booking) => booking.date === date.toISOString().split('T')[0]);
+      return selectedDateBooking && selectedDateBooking.bookedGuests >= 43;
+    }
+
+    const filterDate = (date) => {
+      return isDateFullyBooked(date) || date < new Date();
+    }
+
+    const fetchBookingData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/Booking/${serviceID}`);
+        setBookingData(response.data);
+      } catch (error) {
+        console.error('Error fetching booking data:', error);
+      }
+    }
+    
   return (
     <div class="container mx-auto m-20">
       <div>
@@ -165,7 +211,9 @@ const RopeAccess = () => {
             <DatePicker
               className="flex"
               selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
+              onChange={handleDateChange}
+              //minDate={currentDate}
+              filterDate={filterDate}
             />
 
             <p className="my-3 w-4/12">Select Time</p>
@@ -177,7 +225,7 @@ const RopeAccess = () => {
             >
               <option value="#">Select Time</option>
               <option value="6:00 AM">6:00 AM</option>
-              <option value="1:00 PM">1:00 PM</option>
+              <option value="1:00 PM" disabled>1:00 PM</option>
             </select>
 
             {isLoggedIn ? (
@@ -199,6 +247,11 @@ const RopeAccess = () => {
             {isLoginModalOpen && ( //opens modal
               <GuestLogin /> //sets to false
             )}
+
+            {selectedDate && (
+              <p>Total Booked Guests for {selectedDate.toLocaleDateString()}: {selectedDateBooking.bookedGuests}</p>
+            )}
+            
           </div>
         </div>
 

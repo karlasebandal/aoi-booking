@@ -197,7 +197,24 @@ app.get("/booking", async(req, res) => {
     } catch (err) {
         console.error(err.message);
     }
-});
+})
+
+app.get('/booking/:serviceId', async (req, res) => {
+    try {
+      const serviceID = req.query.serviceId;
+      const query = `
+        SELECT bookingdate, COUNT(*) AS booked_guests
+        FROM booking
+        WHERE serviceId = $1
+        GROUP BY bookingdate
+      `;
+      const { rows } = await pool.query(query, [serviceID]);
+      res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+  })
 
 //Get Payment
 app.get("/payment", async(req, res) => {

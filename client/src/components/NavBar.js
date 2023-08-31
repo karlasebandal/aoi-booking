@@ -14,7 +14,7 @@ const NavBar = () => {
   
   const handleLogout = () => {
     logout()
-    // You can also add code to navigate the user to the login page or another route after logout if needed
+    // add what i want to navigate here
   }
 
   const handleLogin = () => {
