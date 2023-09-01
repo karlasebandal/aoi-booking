@@ -111,6 +111,13 @@ const RopeAccess = () => {
         .catch((error) => console.error('Error fetching data:', error));
     }, [serviceID])
 
+ //Date fullybooked
+    const isDateFullyBooked = (date) => {
+      const selectedDateBooking = bookingData.find((booking) => booking.date === date.toISOString().split('T')[0]);
+      console.log(selectedDateBooking)
+      return selectedDateBooking && selectedDateBooking >= 43;
+    } 
+    
     //Handle Date Change
     const handleDateChange = (date) => {
       if (!isDateFullyBooked(date)) {
@@ -118,11 +125,7 @@ const RopeAccess = () => {
       }
     }
 
-    //Date fullybooked
-    const isDateFullyBooked = (date) => {
-      const selectedDateBooking = bookingData.find((booking) => booking.date === date.toISOString().split('T')[0]);
-      return selectedDateBooking && selectedDateBooking.bookedGuests >= 43;
-    }
+   
 
     const filterDate = (date) => {
       return isDateFullyBooked(date) || date < new Date();
@@ -212,7 +215,7 @@ const RopeAccess = () => {
               className="flex"
               selected={selectedDate}
               onChange={handleDateChange}
-              //minDate={currentDate}
+              minDate={currentDate}
               filterDate={filterDate}
             />
 
@@ -248,10 +251,10 @@ const RopeAccess = () => {
               <GuestLogin /> //sets to false
             )}
 
-            {selectedDate && (
-              <p>Total Booked Guests for {selectedDate.toLocaleDateString()}: {selectedDateBooking.bookedGuests}</p>
-            )}
-            
+            {/* {selectedDate && (
+              <p>Total Booked Guests for {selectedDate.toLocaleDateString()}: {bookingData.bookedGuests}</p>
+            )} */}
+
           </div>
         </div>
 

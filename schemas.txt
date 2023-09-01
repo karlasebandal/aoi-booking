@@ -1,0 +1,6 @@
+SELECT * FROM Booking
+SELECT numGuests FROM Booking
+SELECT bookingdate, COUNT(*) AS booked_guests
+        FROM booking
+        WHERE serviceId = 1
+        GROUP BY bookingdate
