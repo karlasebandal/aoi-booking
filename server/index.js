@@ -149,6 +149,19 @@ app.get("/User/:userId", async(req, res) => {
     }
 })
 
+// Get Users by ID
+app.get("/User/:username", async(req, res) => {
+    try {
+        const { username } = req.params;
+        const allUsers = await pool.query(
+            'SELECT * FROM \"User\" WHERE username = $1', [username]);
+        res.json(allUsers.rows);
+    
+    } catch (err) {
+        console.error(err.message); 
+    }
+})
+
 //Get Services
 app.get("/Service", async(req, res) => {
     try {
@@ -185,8 +198,6 @@ app.get("/guest", async(req, res) => {
     }
 })
 
-
-
 //Get Booking
 app.get("/booking", async(req, res) => {
     try {
@@ -208,9 +219,11 @@ app.get('/booking/:serviceId', async (req, res) => {
         WHERE serviceId = $1
         GROUP BY bookingdate
       `;
-      const { rows } = await pool.query(query, [serviceID]);
+      
+      const rows  = await pool.query(query, [serviceID])
       res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })))
-      console.log(`${bookedGuests}`)
+      console.log(`index.js: ${rows.data}`)
+     
     } catch (error) {
       console.error('Error fetching data:', error);
       res.status(500).json({ error: 'An error occurred' });
@@ -294,17 +307,17 @@ app.put("/Guest/:guestID", async(req, res) => {
 app.put("/Booking/:bookingID", async(req, res) => {
     try {
         const { bookingID } = req.params;
-        const { status, bookingtype, serviceid, guestid, bookingdate } = req.body;
+        const { status } = req.body;
         const updateBooking = await pool.query(
-            "UPDATE Booking SET status = $1, bookingtype = $2, serviceID = $3, guestID = $4, bookingdate = $5  WHERE bookingid = $6",
-        [status, bookingtype, serviceid, guestid, bookingID, bookingdate]);
+            "UPDATE Booking SET status = $1 WHERE bookingid = $2",
+        [status, bookingID]);
 
         res.json("Booking was updated");
     } catch (err) {
         console.error(err.message);
      
     }
-});
+})
 
 // Update Payment
 app.put("/Payment/:paymentID", async(req, res) => {
@@ -422,6 +435,7 @@ app.post("/Guest/login", async(req, res) => {
     
         const guest = result.rows[0]
         const guestId = guest.guestid
+        const firstName = guest.firstName
         console.log(`guest id is ${guestId}`)
         
        // console.log(`${guest.firstName}`)

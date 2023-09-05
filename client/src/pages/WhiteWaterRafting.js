@@ -114,7 +114,7 @@ const RopeAccess = () => {
  //Date fullybooked
     const isDateFullyBooked = (date) => {
       const selectedDateBooking = bookingData.find((booking) => booking.date === date.toISOString().split('T')[0]);
-      console.log(selectedDateBooking)
+      //console.log(selectedDateBooking)
       return selectedDateBooking && selectedDateBooking >= 43;
     } 
     

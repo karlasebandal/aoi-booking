@@ -10,8 +10,8 @@ const GuestLogin = () => {
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
   //const [guestId, setGuestid] = useState()
-  const [message, setMessage] = useState("")
-  const { setIsLoggedIn, setGuestId } = useAuth()
+  //const [message, setMessage] = useState("")
+  const { setIsLoggedIn, setGuestId, setGuestDetails } = useAuth()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   // Handle Login Details
@@ -20,10 +20,10 @@ const GuestLogin = () => {
     
     try {
       const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
-  
-      console.log(response.data.guestId)
+      //setGuestDetails(response.data.guest) //check this on AuthContext
       setGuestId(response.data.guestId)
       setIsLoggedIn(true)
+      handleCloseModal()
 
     } catch (error) {
       console.error("Login error:", error)
