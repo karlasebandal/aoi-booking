@@ -125,7 +125,6 @@ const RopeAccess = () => {
       }
     }
 
-   
 
     const filterDate = (date) => {
       return isDateFullyBooked(date) || date < new Date();
