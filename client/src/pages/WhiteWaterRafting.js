@@ -108,14 +108,22 @@ const RopeAccess = () => {
       axios
         .get(`http://localhost:5000/Booking/${serviceID}`)
         .then((response) => setBookingData(response.data))
-        .catch((error) => console.error('Error fetching data:', error));
+        .catch((error) => console.error('Error fetching data:', error))
+        console.log(bookingData)
     }, [serviceID])
+
+    console.log(`Test: ${selectedDate}`)
+    
 
  //Date fullybooked
     const isDateFullyBooked = (date) => {
-      const selectedDateBooking = bookingData.find((booking) => booking.date === date.toISOString().split('T')[0]);
-      //console.log(selectedDateBooking)
-      return selectedDateBooking && selectedDateBooking >= 43;
+
+      const newDate = selectedDate.getFullYear() +'-'+ ("0" + (selectedDate.getMonth() + 1)).slice(-2) +'-'+ ("0" + (selectedDate.getDate())).slice(-2)
+      console.log(`newDate: ${newDate}`)
+
+      const selectedDateBooking = bookingData.find((booking) => booking.bookingdate === newDate)
+      console.log(`isDateFullBooked Method: ${selectedDateBooking}`)
+      return selectedDateBooking && selectedDateBooking >= 43
     } 
     
     //Handle Date Change
@@ -127,15 +135,15 @@ const RopeAccess = () => {
 
 
     const filterDate = (date) => {
-      return isDateFullyBooked(date) || date < new Date();
+      return isDateFullyBooked(date) || date < new Date()
     }
 
     const fetchBookingData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/Booking/${serviceID}`);
-        setBookingData(response.data);
+        const response = await axios.get(`http://localhost:5000/Booking/${serviceID}`)
+        setBookingData(response.data)
       } catch (error) {
-        console.error('Error fetching booking data:', error);
+        console.error('Error fetching booking data:', error)
       }
     }
     

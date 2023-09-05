@@ -220,9 +220,9 @@ app.get('/booking/:serviceId', async (req, res) => {
         GROUP BY bookingdate
       `;
       
-      const rows  = await pool.query(query, [serviceID])
+      const { rows }  = await pool.query(query, [serviceID])
       res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })))
-      console.log(`index.js: ${rows.data}`)
+      console.log(`index.js: ${rows.booked_guests}`)
      
     } catch (error) {
       console.error('Error fetching data:', error);
