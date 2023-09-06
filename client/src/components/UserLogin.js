@@ -12,7 +12,7 @@ const UserLogin = () => {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
     const navigate = useNavigate()
-    const { setIsLoggedIn } = useAuth()
+    const { setUserIsLoggedIn, setUserName } = useAuth()
 
     const handleLogin = async (e) => {
       e.preventDefault()
@@ -20,8 +20,9 @@ const UserLogin = () => {
       try {
         const response = await axios.post(`http://localhost:5000/User/login`, {username, password})
         setMessage(response.data.message)
-        setIsLoggedIn(true)
-        //navigate('/userdashboard', { state: { username } })
+        setUserIsLoggedIn(true)
+        setUserName(username)
+        navigate('/userdashboard', { state: { username } })
        
 
       } catch (error) {

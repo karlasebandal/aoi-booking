@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 import { useAuth } from "./AuthContext"
 
 const Footer = () => {
-    const { isLoggedIn, logout } = useAuth()
+    const { userIsLoggedIn, userName , userLogout } = useAuth()
 
     const handleLogout = () => {
-        logout()
-        // add what i want to navigate here
+        userLogout()
+        navigate('/')
       }
 
   return (
@@ -26,9 +26,14 @@ const Footer = () => {
                 <Link to="/about" className="text-rescue-orange mr-4 hover:underline md:mr-6">About</Link>
             </li>
 
-            {isLoggedIn ? (
+            {userIsLoggedIn ? (
                 <li>
-                    <Link to="/home" onClick={handleLogout} className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
+                    <a
+                        href=""
+                        onClick={handleLogout} 
+                        className="text-rescue-orange mr-4 hover:underline md:mr-6">
+                        Logout
+                    </a>
                 </li>
             ) : (
                 <li>

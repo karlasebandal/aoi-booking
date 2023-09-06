@@ -17,7 +17,7 @@ const NavBar = () => {
   const handleLogout = () => {
     logout()
     // add what i want to navigate here
-  };
+  }
 
   const handleLogin = () => {};
 

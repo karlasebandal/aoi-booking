@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { useLocation } from "react-router-dom"
+import { useLocation, Link } from "react-router-dom"
 import axios from "axios"
 
 
@@ -11,7 +11,7 @@ const UserDashboard = () => {
   const location = useLocation()
   const { username } = location.state || {}
   const [bookings, setBooking] = useState([])
-  const { isLoggedIn } = useAuth()
+  const { userIsLoggedIn } = useAuth()
 
   const deleteBooking = async (bookingid) => {
     try {
@@ -46,7 +46,7 @@ useEffect(() => {
     <Fragment class="flex">
     {" "}
       <div class="container full-width mt-16">
-        {username ? (
+        {userIsLoggedIn ? (
 
           <div class="flex flex-row">
             <UserSideBar username={username} />
@@ -88,7 +88,7 @@ useEffect(() => {
             </div>
           
         ) : (
-          <p>Loading user data...</p>
+          <p><Link to="/about"/></p>
         )}
       </div>
     </Fragment>
