@@ -1,14 +1,17 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { useLocation } from "react-router-dom"
+import axios from "axios"
+
 
 import UserSideBar from "./UserSideBar"
-import UserEditBooking from "./UserEditBooking";
+import UserEditBooking from "./UserEditBooking"
+import { useAuth } from "../components/AuthContext"
 
 const UserDashboard = () => {
   const location = useLocation()
   const { username } = location.state || {}
   const [bookings, setBooking] = useState([])
+  const { isLoggedIn } = useAuth()
 
   const deleteBooking = async (bookingid) => {
     try {

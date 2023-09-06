@@ -7,8 +7,8 @@ import axios from "axios";
 import raftingImg from "../assets/images/raft-photos/rafting-banner.JPG";
 
 //import components
-import { useAuth } from "../components/AuthContext";
-import GuestLogin from "../components/GuestLogin";
+import { useAuth } from "../components/AuthContext"
+import GuestLogin from "../components/GuestLogin"
 
 const RopeAccess = () => {
   const location = useLocation()
@@ -119,7 +119,7 @@ const RopeAccess = () => {
     const isDateFullyBooked = (date) => {
 
       const newDate = selectedDate.getFullYear() +'-'+ ("0" + (selectedDate.getMonth() + 1)).slice(-2) +'-'+ ("0" + (selectedDate.getDate())).slice(-2)
-      console.log(`newDate: ${newDate}`)
+      console.log(`newDate: ${newDate}`) 
 
       const selectedDateBooking = bookingData.find((booking) => booking.bookingdate === newDate)
       console.log(`isDateFullBooked Method: ${selectedDateBooking}`)

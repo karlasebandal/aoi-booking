@@ -212,7 +212,7 @@ app.get("/booking", async(req, res) => {
 
 app.get('/booking/:serviceId', async (req, res) => {
     try {
-      const serviceID = req.query.serviceId;
+      const serviceID = req.params.serviceId; // Use req.params to access route parameters
       const query = `
         SELECT bookingdate, COUNT(*) AS booked_guests
         FROM booking
@@ -220,15 +220,19 @@ app.get('/booking/:serviceId', async (req, res) => {
         GROUP BY bookingdate
       `;
       
-      const { rows }  = await pool.query(query, [serviceID])
-      res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })))
-      console.log(`index.js: ${rows.booked_guests}`)
-     
+      const { rows } = await pool.query(query, [serviceID]);
+      console.log(rows)
+      // Log the count of booked guests for each row
+      rows.forEach((row) => {
+        console.log(`Date: ${row.bookingdate}, Booked Guests: ${row.booked_guests}`);
+      });
+  
+      res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })));
     } catch (error) {
       console.error('Error fetching data:', error);
       res.status(500).json({ error: 'An error occurred' });
     }
-  })
+  });
 
 //Get Payment
 app.get("/payment", async(req, res) => {
@@ -391,7 +395,7 @@ app.delete("/Payment/:paymentID", async(req, res) => {
 app.post("/User/login", async(req, res) => {
 
     const { username, password } = req.body;
-    //console.log(`Inside index.js ${username}`)
+    console.log(`Inside index.js ${username}`)
 
     try {
         const result = await pool.query('SELECT * FROM \"User\" WHERE username = $1', [username]);

@@ -1,7 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from "./AuthContext"
 
 const Footer = () => {
+    const { isLoggedIn, logout } = useAuth()
+
+    const handleLogout = () => {
+        logout()
+        // add what i want to navigate here
+      }
+
   return (
 
     <footer className="fixed bottom-0 left-0 z-20 w-full p-4 bg-marble-blue md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
@@ -17,9 +25,17 @@ const Footer = () => {
             <li>
                 <Link to="/about" className="text-rescue-orange mr-4 hover:underline md:mr-6">About</Link>
             </li>
-            <li>
-                <Link to="/admin" className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
-            </li>
+
+            {isLoggedIn ? (
+                <li>
+                    <Link to="/home" onClick={handleLogout} className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
+                </li>
+            ) : (
+                <li>
+                    <Link to="/admin" className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
+                </li>       
+            ) }
+            
             
             <li>
                 <Link to="/contact" className="text-rescue-orange hover:underline">Contact
