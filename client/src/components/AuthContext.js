@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [ userIsLoggedIn, setUserIsLoggedIn] = useState(false)
 
-  const [guestDetails, setGuestDetails] = useState(null)
+  const [guestDetails, setGuestDetails] = useState()
   const [guestId, setGuestId] = useState()
   const [userName, setUserName] = useState()
 

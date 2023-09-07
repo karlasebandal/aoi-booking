@@ -11,41 +11,40 @@ import { useAuth } from "../components/AuthContext"
 import GuestLogin from "../components/GuestLogin"
 
 const RopeAccess = () => {
-  const location = useLocation()
-  const { isLoggedIn, guestId } = useAuth()
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const { serviceID } = location.state || {}
+  const location = useLocation();
+  const { isLoggedIn, guestId } = useAuth();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const { serviceID } = location.state || {};
 
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [bookingData, setBookingData] = useState([])
-  const [meetingTime, setMeetingTime] = useState("")
-  const [numOfGuests, setNumOfGuests] = useState(5)
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [bookingData, setBookingData] = useState([]);
+  const [meetingTime, setMeetingTime] = useState("");
+  const [numOfGuests, setNumOfGuests] = useState(5);
 
   const currentDate = new Date()
 
   const handleIncrement = () => {
-    if (numOfGuests >= 5 && numOfGuests <= 42){
-      setNumOfGuests(numOfGuests + 1)
-    }else{
-      alert('Minimum of 5 and maximum of 43 guests only per trip')
+    if (numOfGuests >= 5 && numOfGuests <= 42) {
+      setNumOfGuests(numOfGuests + 1);
+    } else {
+      alert("Minimum of 5 and maximum of 43 guests only per trip");
     }
-  }
+  };
 
   const handleDecrement = () => {
-    if (numOfGuests > 5){
-      setNumOfGuests(numOfGuests - 1)
-    }else{
-      alert('Minimum of 5 guests')
+    if (numOfGuests > 5) {
+      setNumOfGuests(numOfGuests - 1);
+    } else {
+      alert("Minimum of 5 guests");
     }
-    
-  }
+  };
 
   //When Book button is clicked
   const handleBooking = async () => {
     console.log(`Rafting Guest id: ${guestId}`);
     try {
       // Create the booking data
-      const formattedDate = selectedDate.toISOString().split("T")[0]
+      const formattedDate = selectedDate.toISOString().split("T")[0];
 
       const newBooking = {
         bookingcreated: new Date().toISOString(),
@@ -56,7 +55,7 @@ const RopeAccess = () => {
         bookingdate: formattedDate,
         bookingtime: meetingTime,
         numguests: parseInt(numOfGuests),
-      }
+      };
 
       // Send the data to the backend API
       await axios.post("http://localhost:5000/Booking", newBooking);
@@ -75,78 +74,129 @@ const RopeAccess = () => {
     if (!isLoggedIn) {
       // Check if the guest is authenticated
       setIsLoginModalOpen(true); //pops up login form
-      alert("Please log in to continue booking.")
+      alert("Please log in to continue booking.");
       return;
     }
 
-    setIsLoginModalOpen(!isLoginModalOpen)
-
-  }
+    setIsLoginModalOpen(!isLoginModalOpen);
+  };
 
   const handleCloseModal = () => {
-    setIsLoginModalOpen(false)
-  }
+    setIsLoginModalOpen(false);
+  };
 
-    // Add event listener to handle Escape key press
-    useEffect(() => {
-      const handleKeyDown = (e) => {
-        if (e.key === "Escape") {
-          handleCloseModal()
-        }
+  // Add event listener to handle Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        handleCloseModal();
       }
-  
-      window.addEventListener("keydown", handleKeyDown)
-  
-      // Clean up the event listener when component unmounts
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown)
-      }
-    }, [])
+    };
 
+    window.addEventListener("keydown", handleKeyDown);
 
-    useEffect(() => {
-      axios
-        .get(`http://localhost:5000/Booking/${serviceID}`)
-        .then((response) => setBookingData(response.data))
-        .catch((error) => console.error('Error fetching data:', error))
-        console.log(bookingData)
-    }, [serviceID])
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
-    console.log(`Test: ${selectedDate}`)
-    
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/Booking/${serviceID}`)
+      .then((response) => setBookingData(response.data))
+      .catch((error) => console.error("Error fetching data:", error));
+    console.log(bookingData);
+  }, [serviceID]);
 
- //Date fullybooked
-    const isDateFullyBooked = (date) => {
+  console.log(`Test: ${selectedDate}`);
 
-      const newDate = selectedDate.getFullYear() +'-'+ ("0" + (selectedDate.getMonth() + 1)).slice(-2) +'-'+ ("0" + (selectedDate.getDate())).slice(-2)
-      console.log(`newDate: ${newDate}`) 
+  //Date fullybooked
+  const isDateFullyBooked = (date) => {
+    const newDate =
+      selectedDate.getFullYear() +
+      "-" +
+      ("0" + (selectedDate.getMonth())).slice(-2) +
+      "-" +
+      ("0" + selectedDate.getDate()).slice(-2);
+    console.log(`newDate: ${newDate}`);
 
-      const selectedDateBooking = bookingData.find((booking) => booking.bookingdate === newDate)
-      console.log(`isDateFullBooked Method: ${selectedDateBooking}`)
-      return selectedDateBooking && selectedDateBooking >= 43
-    } 
-    
-    //Handle Date Change
-    const handleDateChange = (date) => {
-      if (!isDateFullyBooked(date)) {
-        setSelectedDate(date);
-      }
+    const selectedDateBooking = bookingData.find(
+      (booking) => booking.bookingdate === newDate
+    );
+    console.log(`isDateFullBooked Method: ${selectedDateBooking}`);
+    return selectedDateBooking && selectedDateBooking >= 43;
+  };
+
+  //Handle Date Change 1
+  // const handleDateChange = (date) => {
+  //   if (!isDateFullyBooked(date)) {
+  //     setSelectedDate(date);
+  //   }
+  // }
+
+  //Handle Date Change 2
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString().split("T")[0];
+    console.log("Formatted Date:", formattedDate); // Add this line to log the formatted date
+    const selectedDateBooking = bookingData.find(
+      (booking) => booking.bookingdate === formattedDate
+    );
+
+    // Check if the selected date is fully booked
+    if (selectedDateBooking && selectedDateBooking.numguests >= 43) {
+      alert("This date is fully booked");
+      return;
     }
 
+    setSelectedDate(date);
+  };
 
-    const filterDate = (date) => {
-      return isDateFullyBooked(date) || date < new Date()
+  // Calculate the total booked guests for the selected date
+  const calculateTotalBookedGuests = () => {
+    if (!selectedDate) {
+      return 0;
     }
 
-    const fetchBookingData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/Booking/${serviceID}`)
-        setBookingData(response.data)
-      } catch (error) {
-        console.error('Error fetching booking data:', error)
-      }
-    }
-    
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+    const selectedDateBookings = bookingData.filter(
+      (booking) => booking.bookingdate === formattedDate
+    );
+
+    // Calculate the total booked guests for the selected date
+    return selectedDateBookings.reduce(
+      (total, booking) => total + booking.numguests,
+      0
+    );
+  };
+
+  //filterdate1
+  // const filterDate = (date) => {
+  //   return isDateFullyBooked(date) || date < new Date()
+  // }
+
+  //filterdate2
+  const filterDate = (date) => {
+    const formattedDate = date.toISOString().split("T")[0];
+    const selectedDateBooking = bookingData.find(
+      (booking) => booking.bookingdate === formattedDate
+    );
+
+    // Disable the date if it's fully booked (numguests >= 43) or in the past (date < currentDate)
+    return !selectedDateBooking || selectedDateBooking.numguests >= 43
+  };
+
+  // const fetchBookingData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:5000/Booking/${serviceID}`
+  //     );
+  //     setBookingData(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching booking data:", error);
+  //   }
+  // };
+
   return (
     <div class="container mx-auto m-20">
       <div>
@@ -235,7 +285,9 @@ const RopeAccess = () => {
             >
               <option value="#">Select Time</option>
               <option value="6:00 AM">6:00 AM</option>
-              <option value="1:00 PM" disabled>1:00 PM</option>
+              <option value="1:00 PM" disabled>
+                1:00 PM
+              </option>
             </select>
 
             {isLoggedIn ? (
@@ -261,7 +313,6 @@ const RopeAccess = () => {
             {/* {selectedDate && (
               <p>Total Booked Guests for {selectedDate.toLocaleDateString()}: {bookingData.bookedGuests}</p>
             )} */}
-
           </div>
         </div>
 

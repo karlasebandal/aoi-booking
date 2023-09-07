@@ -210,9 +210,35 @@ app.get("/booking", async(req, res) => {
     }
 })
 
+// app.get('/booking/:serviceId', async (req, res) => {
+//     try {
+//       const serviceID = req.params.serviceId; // Use req.params to access route parameters
+//       const query = `
+//         SELECT bookingdate, COUNT(*) AS booked_guests
+//         FROM booking
+//         WHERE serviceId = $1
+//         GROUP BY bookingdate
+//       `;
+      
+//       const { rows } = await pool.query(query, [serviceID]);
+//       console.log(rows)
+//       // Log the count of booked guests for each row
+//       rows.forEach((row) => {
+//         console.log(`Date: ${row.bookingdate}, Booked Guests: ${row.booked_guests}`);
+//       });
+  
+//       res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })));
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+//       res.status(500).json({ error: 'An error occurred' });
+//     }
+//   });
+
+//Get Payment
+
 app.get('/booking/:serviceId', async (req, res) => {
     try {
-      const serviceID = req.params.serviceId; // Use req.params to access route parameters
+      const serviceID = req.params.serviceId;
       const query = `
         SELECT bookingdate, COUNT(*) AS booked_guests
         FROM booking
@@ -221,20 +247,66 @@ app.get('/booking/:serviceId', async (req, res) => {
       `;
       
       const { rows } = await pool.query(query, [serviceID]);
-      console.log(rows)
-      // Log the count of booked guests for each row
-      rows.forEach((row) => {
-        console.log(`Date: ${row.bookingdate}, Booked Guests: ${row.booked_guests}`);
-      });
-  
-      res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })));
+      
+      const bookingData = rows.map((row) => ({
+        date: row.bookingdate,
+        bookedGuests: row.booked_guests,
+      }));
+      
+      res.json(bookingData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching booking data:', error);
       res.status(500).json({ error: 'An error occurred' });
     }
   });
 
-//Get Payment
+// app.get('/booking/:guestId', async (req, res) => {
+
+//     try {
+//         const { guestId } = req.params;
+//         const allUsers = await pool.query(
+//             'SELECT * FROM \"User\" WHERE username = $1', [guestId]);
+//         res.json(allUsers.rows);
+    
+//     } catch (err) {
+//         console.error(err.message); 
+//     }
+
+   
+// })
+
+app.get('/booking/:guestId', async (req, res) => {
+    try {
+      const guestId = req.params.guestId;
+      const query = `
+        SELECT *
+        FROM booking
+        WHERE guestId = $1
+      `;
+      
+      const allBooking = await pool.query(query, [guestId])
+      
+      res.json(allBooking.rows)
+
+    } catch (error) {
+      console.error('Error fetching booking data:', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+  })
+
+  // Get Users by ID
+app.get("/User/:username", async(req, res) => {
+    try {
+        const { username } = req.params;
+        const allUsers = await pool.query(
+            'SELECT * FROM \"User\" WHERE username = $1', [username]);
+        res.json(allUsers.rows);
+    
+    } catch (err) {
+        console.error(err.message); 
+    }
+})
+
 app.get("/payment", async(req, res) => {
     try {
         const allPayment = await pool.query(

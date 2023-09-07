@@ -17,7 +17,7 @@ const UserDashboard = () => {
     try {
         const deleteBooking = await fetch(`http://localhost:5000/booking/${bookingid}`, {
             method: "DELETE"
-        });
+        })
 
         setBooking(bookings.filter(booking => booking.bookingid !== bookingid));
 

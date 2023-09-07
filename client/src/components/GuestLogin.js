@@ -20,7 +20,7 @@ const GuestLogin = () => {
     
     try {
       const response = await axios.post(`http://localhost:5000/Guest/login`, {emailAdd,password})
-      //setGuestDetails(response.data.guest) //check this on AuthContext
+      setGuestDetails(response.data.guest) //check this on AuthContext
       setGuestId(response.data.guestId)
       setIsLoggedIn(true)
       handleCloseModal()

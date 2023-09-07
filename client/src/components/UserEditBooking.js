@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react"
+import axios from "axios"
 
 const UserEditBooking = ({ book }) => {
 
@@ -7,16 +8,17 @@ const UserEditBooking = ({ book }) => {
     // Edit description function
 
     const updateStatus = async e => {
-        e.preventDefault();
+        e.preventDefault()
+
         try {
             const body = {status};
-            const response = await fetch(`http://localhost:5000/todos/${book.bookingid}`,{
+            const response = await fetch(`http://localhost:5000/booking/${book.bookingid}`,{
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
-            });
+            })
 
-            window.location = "/";
+            //window.location = "/";
         } catch (err) {
             console.error(err.message);
             
