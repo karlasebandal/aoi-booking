@@ -151,6 +151,9 @@ const GuestDashboard = () => {
                     <th scope="col" className="px-6 py-3">
                       Booking Type
                     </th>
+                    <th scope="col" className="px-6 py-3">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -200,6 +203,13 @@ const GuestDashboard = () => {
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {book.bookingtype}
+                      </td>
+                      <td
+                        scope="col"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {/* Button is disabled if deposit amount is paid && */}
+                        <button>Pay</button> 
                       </td>
                     </tr>
                   ))}
