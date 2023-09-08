@@ -15,6 +15,7 @@ import Services from "./Services"
 import GuestLogin from "./GuestLogin" //Guest
 import GuestDashboard from "./GuestDashboard"
 import GuestRegistration from "./GuestRegistration"
+import GuestPayment from "./GuestPayment"
 
 //main access
 import HomePage from '../pages/HomePage'
@@ -55,6 +56,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/guestregistration" element={<GuestRegistration />} />
             <Route path="/guestdashboard" element={<GuestDashboard />} />
+            <Route path="/guestpayment" element={<GuestPayment />} />
             <Route path="/login" element={<GuestLogin />} />
           
             
