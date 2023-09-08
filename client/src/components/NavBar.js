@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from "./AuthContext";
+import { useAuth1 } from "./AuthContextGuest";
 
 import "../assets/styles/NavBar.css";
 import logo from "../assets/images/logo-type.svg";
@@ -10,7 +10,7 @@ import GuestLogin from "../components/GuestLogin";
 //import HomePage from '../pages/HomePage'
 //stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 const NavBar = () => {
-  const { isLoggedIn, logout } = useAuth()
+  const { isLoggedIn, logout } = useAuth1()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   
 

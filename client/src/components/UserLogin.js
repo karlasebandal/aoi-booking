@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 //import components
-import { useAuth } from './AuthContext'
+import { useAuth2 } from './AuthContextUser'
 
 
 const UserLogin = () => {
@@ -12,7 +12,7 @@ const UserLogin = () => {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
     const navigate = useNavigate()
-    const { setUserIsLoggedIn, setUserName } = useAuth()
+    const { setUserIsLoggedIn, userName, setUserName } = useAuth2()
 
     const handleLogin = async (e) => {
       e.preventDefault()
@@ -22,7 +22,7 @@ const UserLogin = () => {
         setMessage(response.data.message)
         setUserIsLoggedIn(true)
         setUserName(username)
-        navigate('/userdashboard', { state: { username } })
+        navigate('/userdashboard')
        
 
       } catch (error) {

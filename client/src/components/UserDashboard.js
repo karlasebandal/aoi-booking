@@ -5,13 +5,13 @@ import axios from "axios"
 
 import UserSideBar from "./UserSideBar"
 import UserEditBooking from "./UserEditBooking"
-import { useAuth } from "../components/AuthContext"
+import { useAuth2 } from "./AuthContextUser"
 
-const UserDashboard = () => {
+const UserDashboard = ({ userName }) => {
   const location = useLocation()
-  const { username } = location.state || {}
+  //const { username } = location.state || {}
   const [bookings, setBooking] = useState([])
-  const { userIsLoggedIn } = useAuth()
+  const { userIsLoggedIn } = useAuth2()
 
   const deleteBooking = async (bookingid) => {
     try {
@@ -49,7 +49,7 @@ useEffect(() => {
         {userIsLoggedIn ? (
 
           <div class="flex flex-row">
-            <UserSideBar username={username} />
+            <UserSideBar userName={userName} />
               {" "}
               <div class="relative overflow-x-auto">
               <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

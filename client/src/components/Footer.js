@@ -1,14 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from "./AuthContext"
+
 
 const Footer = () => {
-    const { userIsLoggedIn, userName , userLogout } = useAuth()
-
-    const handleLogout = () => {
-        userLogout()
-        navigate('/')
-      }
+  
 
   return (
 
@@ -26,20 +21,7 @@ const Footer = () => {
                 <Link to="/about" className="text-rescue-orange mr-4 hover:underline md:mr-6">About</Link>
             </li>
 
-            {userIsLoggedIn ? (
-                <li>
-                    <a
-                        href=""
-                        onClick={handleLogout} 
-                        className="text-rescue-orange mr-4 hover:underline md:mr-6">
-                        Logout
-                    </a>
-                </li>
-            ) : (
-                <li>
-                    <Link to="/admin" className="text-rescue-orange mr-4 hover:underline md:mr-6">Admin</Link>
-                </li>       
-            ) }
+         
             
             
             <li>

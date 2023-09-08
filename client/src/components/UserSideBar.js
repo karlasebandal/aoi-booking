@@ -1,30 +1,49 @@
-import React, { Fragment }from "react";
+import React, { Fragment }from "react"
+import { Link } from 'react-router-dom'
+import { useAuth2 } from "./AuthContextUser"
 
 //class="flex h-screen w-[250px] flex-col bg-purity pt-5"
 
 
-const UserSideBar = ({ username }) => {
+const UserSideBar = ({ userName }) => {
+  const { userIsLoggedIn, userLogout } = useAuth2()
+
+  const handleLogout = () => {
+    userLogout()
+    //navigate('/')
+  }
 
 
   return (
     <div class="flex h-screen w-[250px] left-0">
+    {userIsLoggedIn ? (
       <div class="bg-purity">
         <ul class="flex w-full flex-col gap-3 px-3">
           <li>
-            <a
+            <Link
+              to="/userdashboard"
               href=""
               class="flex items-center justify-start gap-2 rounded-full bg-slate-800 px-3 py-2.5 text-sm font-medium text-slate-200 ring-offset-2 ring-offset-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
-              Dashboard
-            </a>
+              Bookings
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href=""
               class="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
-              Feed
-            </a>
+              Notifications
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/payment"
+              href=""
+              class="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+              Payment
+            </Link>
           </li>
         </ul>
         <div class="mt-auto border-t border-slate-800 px-2 py-2">
@@ -36,13 +55,23 @@ const UserSideBar = ({ username }) => {
               />
             </div>
             <div>
-              <p class="text-sm text-marble-blue">{`${username}`}</p>
-              <p class="text-xs text-slate-400">creator</p>
+              <p class="text-sm text-marble-blue">{`${userName}`}</p>
+              <p>
+                    <a
+                        href=""
+                        onClick={handleLogout} 
+                        className="text-rescue-orange mr-4 hover:underline md:mr-6">
+                        Logout
+                    </a>
+                </p>
             </div>
           </div>
         </div>
         
-      </div>
+      </div> 
+    ) : (
+      <></>
+    ) }
     </div>
   );
 };

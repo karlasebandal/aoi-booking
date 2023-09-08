@@ -10,7 +10,7 @@ import ropeAccessImg from '../assets/images/rope-access1.jpg'
 import ropeAccessImg2 from '../assets/images/rope-access2.jpg'
 
 //import components
-import { useAuth } from '../components/AuthContext'
+import { useAuth1 } from '../components/AuthContextGuest'
 import GuestLogin from '../components/GuestLogin'
 
 const RopeAccess = () => {
@@ -19,7 +19,7 @@ const RopeAccess = () => {
   const [meetingDate, setMeetingDate] = useState(new Date())
   const [meetingTime, setMeetingTime] = useState("")
   const [bookingType, setBookingType] = useState("")
-  const { isLoggedIn, guestId } = useAuth()
+  const { isLoggedIn, guestId } = useAuth1()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [numOfGuests, setNumOfGuests] = useState(1)
 

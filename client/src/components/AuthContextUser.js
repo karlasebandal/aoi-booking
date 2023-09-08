@@ -1,13 +1,11 @@
 import React, { createContext, useContext, useState } from 'react'
-const AuthContext = createContext()
 
+const AuthContextUser = createContext()
 
-export const AuthProvider = ({ children }) => {
+export const AuthProviderUser = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [ userIsLoggedIn, setUserIsLoggedIn] = useState(false)
 
-  const [guestDetails, setGuestDetails] = useState()
-  const [guestId, setGuestId] = useState()
   const [userName, setUserName] = useState()
 
   const login = (guestData) => {
@@ -26,10 +24,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userIsLoggedIn, setUserIsLoggedIn, userName, setUserName, guestId, setGuestId, guestDetails, setGuestDetails, login, logout, userLogout }}>
+    <AuthContextUser.Provider value={{ isLoggedIn, setIsLoggedIn, userIsLoggedIn, setUserIsLoggedIn, login, logout, userLogout, userName, setUserName }}>
       {children}
-    </AuthContext.Provider>
+    </AuthContextUser.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth2 = () => useContext(AuthContextUser)

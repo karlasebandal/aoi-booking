@@ -7,12 +7,12 @@ import axios from "axios";
 import raftingImg from "../assets/images/raft-photos/rafting-banner.JPG";
 
 //import components
-import { useAuth } from "../components/AuthContext"
+import { useAuth1 } from "../components/AuthContextGuest"
 import GuestLogin from "../components/GuestLogin"
 
 const RopeAccess = () => {
   const location = useLocation();
-  const { isLoggedIn, guestId } = useAuth();
+  const { isLoggedIn, guestId } = useAuth1();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { serviceID } = location.state || {};
 

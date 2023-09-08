@@ -260,39 +260,28 @@ app.get('/booking/:serviceId', async (req, res) => {
     }
   });
 
-// app.get('/booking/:guestId', async (req, res) => {
 
-//     try {
-//         const { guestId } = req.params;
-//         const allUsers = await pool.query(
-//             'SELECT * FROM \"User\" WHERE username = $1', [guestId]);
-//         res.json(allUsers.rows);
-    
-//     } catch (err) {
-//         console.error(err.message); 
-//     }
-
-   
-// })
-
-app.get('/booking/:guestId', async (req, res) => {
+  app.get("/booking/:guestId", async (req, res) => {
     try {
-      const guestId = req.params.guestId;
-      const query = `
-        SELECT *
-        FROM booking
-        WHERE guestId = $1
-      `;
-      
-      const allBooking = await pool.query(query, [guestId])
-      
-      res.json(allBooking.rows)
+      const { guestId } = req.params;
 
-    } catch (error) {
-      console.error('Error fetching booking data:', error);
-      res.status(500).json({ error: 'An error occurred' });
+      if (typeof guestId === 'undefined' || isNaN(parseInt(guestId))) {
+        console.log("Invalid guestId:", guestId); // Log invalid guestId
+        return res.status(400).json({ error: "Invalid guestId" });
+      }
+  
+      const allBooking = await pool.query("SELECT * FROM Booking WHERE guestId = $1", [
+        guestId
+      ]);
+  
+      console.log("Fetched bookings for guestId:", guestId); // Log successful fetch
+  
+      res.json(allBooking.rows);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Internal server error" });
     }
-  })
+  });
 
   // Get Users by ID
 app.get("/User/:username", async(req, res) => {
