@@ -100,7 +100,7 @@ const GuestDashboard = () => {
 
   useEffect(() => {
     // Access guestId from location.state
-    const { guestId } = location.state || {};
+    //const { guestId } = location.state || {};
 
     console.log('Guest ID:', guestId);
 
@@ -208,7 +208,9 @@ const GuestDashboard = () => {
                         scope="col"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {/* Button is disabled if deposit amount is paid && */}
+                        {/* Button is disabled if deposit amount is paid && payment has not been done after 24 hours*/}
+                        {/* If paid, the status changed to Confirmed */}
+                        {/* If not YET paid, the status is pending -- default status for river rafting, else confirmed on other services */}
                         <button>Pay</button> 
                       </td>
                     </tr>
