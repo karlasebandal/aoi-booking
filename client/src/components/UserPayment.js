@@ -3,7 +3,7 @@ import { useAuth2 } from "./AuthContextUser"
 
 import UserSideBar from "./UserSideBar"
 
-const Payment = () => {
+const UserPayment = () => {
   const { userIsLoggedIn, userName } = useAuth2()
   const [payments, setPayments] = useState([])
 
@@ -69,4 +69,4 @@ useEffect(() => {
   )
 }
 
-export default Payment
+export default UserPayment

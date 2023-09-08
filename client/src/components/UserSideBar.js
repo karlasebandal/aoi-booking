@@ -38,7 +38,7 @@ const UserSideBar = ({ userName }) => {
           </li>
           <li>
             <Link
-              to="/payment"
+              to="/userpayment"
               href=""
               class="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >

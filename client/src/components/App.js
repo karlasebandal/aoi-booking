@@ -28,7 +28,7 @@ import Footer from './Footer'
 import UserLogin from "./UserLogin" //Admin
 import UserRegistration from "./UserRegistration" //AOI Registration
 import UserDashboard from "./UserDashboard"
-import Payment from "./Payment"
+import UserPayment from "./UserPayment"
 
 //for testing
 //import TestLogin from '../for-testing/TestLogin'
@@ -62,7 +62,7 @@ function App() {
             <Route path="/admin" element={<UserLogin />} />
             <Route path="/uregistration" element={<UserRegistration />} />
             <Route path="/userdashboard" element={<UserDashboard userName={userName}/>} />
-            <Route path="/payment" element={<Payment />} />
+            <Route path="/userpayment" element={<UserPayment />} />
           
 
             <Route path="/contact" element={<Contact />} />
