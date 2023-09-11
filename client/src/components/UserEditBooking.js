@@ -26,10 +26,6 @@ const UserEditBooking = ({ book }) => {
     };
 
   return (
-    <Fragment>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target={`#id${book.bookingid}`}>
-        Edit
-        </button>
 
         <div class="modal" id={`id${book.bookingid}`}>
             <div class="modal-dialog">
