@@ -1,5 +1,9 @@
+SELECT * FROM Booking WHERE guestid = 4
+SELECT * FROM "User"
 SELECT * FROM Booking
-SELECT numGuests FROM Booking
+SELECT * FROM Payment 
+SELECT * FROM PaymentMode 
+SELECT * FROM Guest
 SELECT bookingdate, COUNT(*) AS booked_guests
         FROM booking
         WHERE serviceId = 1

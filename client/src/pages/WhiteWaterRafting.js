@@ -198,9 +198,9 @@ const RopeAccess = () => {
   // };
 
   return (
-    <div class="container mx-auto m-20">
+    <div className="container mx-auto m-20">
       <div>
-        <img src={raftingImg} class="static rounded-xl" alt="Rafting" />
+        <img src={raftingImg} className="static rounded-xl" alt="Rafting" />
       </div>
 
       <div>
@@ -219,10 +219,10 @@ const RopeAccess = () => {
           <p>Loading user data...</p>
         )}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Intro Here */}
-          <div class="col-span-2">
-            <div class="flex justify-center text-xl">
+          <div className="col-span-2">
+            <div className="flex justify-center text-xl">
               <div className="items-center text-md drop-shadow-xl sm:top-1/2">
                 A recreational water activity using inflatable rafts to navigate
                 and ride the waves created by river rapids. Base Camp River
@@ -236,7 +236,7 @@ const RopeAccess = () => {
           </div>
 
           {/* Booking Card - right panel*/}
-          <div class="flex justify-center text-md border-gray-300 rounded-xl p-6 bg-gray-100">
+          <div className="flex justify-center text-md border-gray-300 rounded-xl p-6 bg-gray-100">
             Rafting Inclusions and Other Details here
           </div>
         </div>
@@ -248,25 +248,25 @@ const RopeAccess = () => {
           <div className="w-12/12 pl-5">
             <div className="items-center w-8/12 my-5">Number of Guest(s)</div>
 
-            <div class="w-8/12 my-3">
+            <div className="w-8/12 my-3">
               <div className="inline-flex justify-center align-middle">
                 <button
                   onClick={handleIncrement}
-                  class="bg-rescue-orange text-navy-blue p-3 mr-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                  className="bg-rescue-orange text-navy-blue p-3 mr-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
                 >
                   +
                 </button>
                 <div>{numOfGuests}</div>
                 <button
                   onClick={handleDecrement}
-                  class="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                  className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
                 >
                   -
                 </button>
               </div>
             </div>
 
-            <p class="my-3">Select a date</p>
+            <p className="my-3">Select a date</p>
             <label></label>
             <DatePicker
               className="flex"
@@ -293,14 +293,14 @@ const RopeAccess = () => {
             {isLoggedIn ? (
               <button
                 onClick={handleBooking}
-                class="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               >
                 Book
               </button>
             ) : (
               <button
                 onClick={toggleLoginModal}
-                class="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                className="bg-rescue-orange text-navy-blue p-3 mb-5 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               >
                 Book
               </button>
@@ -316,7 +316,7 @@ const RopeAccess = () => {
           </div>
         </div>
 
-        <div class="flex justify-center text-6xl border-gray-300 rounded-xl p-6 bg-gray-100">
+        <div className="flex justify-center text-6xl border-gray-300 rounded-xl p-6 bg-gray-100">
           4
         </div>
       </div>

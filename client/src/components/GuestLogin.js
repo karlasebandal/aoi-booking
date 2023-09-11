@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAuth1 } from './AuthContextGuest'
 //import { useAuthentication } from './UseAuthentication'
 
-const GuestLogin = () => {
+const GuestLogin = ({ handleCloseModal }) => {
   const nav = useNavigate()
   const [emailAdd, setEmailAdd] = useState("")
   const [password, setPassword] = useState("")
@@ -23,18 +23,19 @@ const GuestLogin = () => {
       setGuestDetails(response.data.guest) //check this on AuthContext
       setGuestId(response.data.guestId)
       setIsLoggedIn(true)
-      handleCloseModal()
+      
 
     } catch (error) {
       console.error("Login error:", error)
       alert("Login error catch")
     }
+    
   }
 
-  //Handles modal
-  const handleCloseModal = () => {
-    setIsLoginModalOpen(false) // Close the modal
-  }
+  // //Handles modal
+  // const handleCloseModal = () => {
+  //   setIsLoginModalOpen(false) // Close the modal
+  // }
 
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {

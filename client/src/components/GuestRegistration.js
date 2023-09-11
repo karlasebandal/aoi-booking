@@ -114,7 +114,7 @@ const handleInputChange = (e) => {
                 id="agree"
                 className="accent-rescue-orange"
               />
-              <label for="agree" className="ml-2 text-gray-700 text-sm">
+              <label htmlFor="agree" className="ml-2 text-gray-700 text-sm">
                 I agree to the terms and privacy.
               </label>
             </div>

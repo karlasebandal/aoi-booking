@@ -40,18 +40,18 @@ const HomePage = () => {
 
   return (
 
-    <div class="flex flex-wrap items-center justify-between">
+    <div className="flex flex-wrap items-center justify-between">
       <div className="hidden sm:block">
-        <img src={banner} class="static" alt="Rafting" />
+        <img src={banner} className="static" alt="Rafting" />
       </div>
-      <div class="flex-col absolute">
+      <div className="flex-col absolute">
         
         <div className="items-center text-purity text-8xl font-header mx-20 drop-shadow-xl sm:top-1/2">
             FEEL THE RUSH, <br/>DISCOVER <br/>DAVAO RIVER
         </div>
         
-        <div class="items-center mx-20 my-5 bg-navy-blue p-5 rounded-lg focus:ring-marble-blue focus:border-marble-blue">
-          <label for="services" class="block mb-2 text-xl font-medium text-rescue-orange dark:text-white rounded-lg">
+        <div className="items-center mx-20 my-5 bg-navy-blue p-5 rounded-lg focus:ring-marble-blue focus:border-marble-blue">
+          <label htmlFor="services" className="block mb-2 text-xl font-medium text-rescue-orange dark:text-white rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="357" height="38" viewBox="0 0 357 38" fill="none">
                 <path d="M12.76 2.00003C14.6533 2.00003 16.32 2.3867 17.76 3.16003C19.2 3.9067 20.3067 4.9867 21.08 6.40003C21.88 7.78669 22.28 9.3867 22.28 11.2C22.28 12.9867 21.8667 14.56 21.04 15.92C20.2133 17.28 19.0533 18.3334 17.56 19.08C16.0667 19.8267 14.3467 20.2 12.4 20.2H8.16C8.02667 20.2 7.96 20.2667 7.96 20.4V29.4C7.96 29.5867 7.90667 29.7334 7.8 29.84C7.69334 29.9467 7.54667 30 7.36 30H1.04C0.853336 30 0.706669 29.9467 0.600003 29.84C0.493336 29.7334 0.440002 29.5867 0.440002 29.4V2.60003C0.440002 2.41336 0.493336 2.2667 0.600003 2.16003C0.706669 2.05336 0.853336 2.00003 1.04 2.00003H12.76ZM11.52 14.2C12.5067 14.2 13.2933 13.9467 13.88 13.44C14.4933 12.9067 14.8 12.2134 14.8 11.36C14.8 10.48 14.4933 9.77336 13.88 9.24003C13.2933 8.7067 12.5067 8.44003 11.52 8.44003H8.16C8.02667 8.44003 7.96 8.5067 7.96 8.64003V14C7.96 14.1334 8.02667 14.2 8.16 14.2H11.52Z" fill="#F36C21"/>
                 <path d="M28.1044 7.80003C27.011 7.80003 26.1044 7.45336 25.3844 6.76003C24.691 6.04003 24.3444 5.13336 24.3444 4.04003C24.3444 2.92003 24.691 2.01336 25.3844 1.32003C26.1044 0.626696 27.011 0.280029 28.1044 0.280029C29.1977 0.280029 30.091 0.626696 30.7844 1.32003C31.5044 2.01336 31.8644 2.92003 31.8644 4.04003C31.8644 5.10669 31.5044 6.00003 30.7844 6.72003C30.091 7.44003 29.1977 7.80003 28.1044 7.80003ZM24.9044 30C24.7177 30 24.571 29.9467 24.4644 29.84C24.3577 29.7334 24.3044 29.5867 24.3044 29.4V9.80003C24.3044 9.61336 24.3577 9.4667 24.4644 9.36003C24.571 9.25336 24.7177 9.20003 24.9044 9.20003H31.2244C31.411 9.20003 31.5577 9.25336 31.6644 9.36003C31.771 9.4667 31.8244 9.61336 31.8244 9.80003V29.4C31.8244 29.5867 31.771 29.7334 31.6644 29.84C31.5577 29.9467 31.411 30 31.2244 30H24.9044Z" fill="#F36C21"/>
@@ -78,16 +78,16 @@ const HomePage = () => {
             value={selectedServiceID} 
             onChange={handleOptionChange} 
             id="services" 
-            class="bg-navy-blue border hover:bg-marble-blue border-marble-blue text-purity text-sm rounded-lg focus:ring-marble-blue focus:border-marble-blue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="#" class="hover:bg-marble-blue">Select an option</option>
+            className="bg-navy-blue border hover:bg-marble-blue border-marble-blue text-purity text-sm rounded-lg focus:ring-marble-blue focus:border-marble-blue block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="#" className="hover:bg-marble-blue">Select an option</option>
               {services.map(service => (
-                <option class="hover:bg-marble-blue" key={service.serviceid} value={`${service.serviceid}|${service.name}`}
+                <option className="hover:bg-marble-blue" key={service.serviceid} value={`${service.serviceid}|${service.name}`}
                 >{service.name}</option>
               ))}
               
           </select>
 
-          <button class="text-right flex space-x-3 md:mt-6" onClick={handleRedirect}>
+          <button className="text-right flex space-x-3 md:mt-6" onClick={handleRedirect}>
             <div>
               <div className="mb-1 text-xl text-purity inline-flex items-end">
                 <svg className="inline-flex items-end" xmlns="http://www.w3.org/2000/svg" width="94" height="21" viewBox="0 0 94 21" fill="none">

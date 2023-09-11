@@ -1,8 +1,8 @@
 import React, { Fragment }from "react"
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useAuth2 } from "./AuthContextUser"
 
-//class="flex h-screen w-[250px] flex-col bg-purity pt-5"
+//className="flex h-screen w-[250px] flex-col bg-purity pt-5"
 
 
 const UserSideBar = ({ userName }) => {
@@ -15,15 +15,15 @@ const UserSideBar = ({ userName }) => {
 
 
   return (
-    <div class="flex h-screen w-[250px] left-0">
+    <div className="flex h-screen w-[250px] left-0">
     {userIsLoggedIn ? (
-      <div class="bg-purity">
-        <ul class="flex w-full flex-col gap-3 px-3">
+      <div className="bg-purity">
+        <ul className="flex w-full flex-col gap-3 px-3">
           <li>
             <Link
               to="/userdashboard"
               href=""
-              class="flex items-center justify-start gap-2 rounded-full bg-slate-800 px-3 py-2.5 text-sm font-medium text-slate-200 ring-offset-2 ring-offset-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="flex items-center justify-start gap-2 rounded-full bg-slate-800 px-3 py-2.5 text-sm font-medium text-slate-200 ring-offset-2 ring-offset-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               Bookings
             </Link>
@@ -31,7 +31,7 @@ const UserSideBar = ({ userName }) => {
           <li>
             <Link
               href=""
-              class="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               Notifications
             </Link>
@@ -40,27 +40,27 @@ const UserSideBar = ({ userName }) => {
             <Link
               to="/userpayment"
               href=""
-              class="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="flex items-center justify-start gap-2 rounded-full px-3 py-2.5 text-sm font-medium text-slate-400 ring-offset-2 ring-offset-slate-950 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               Payment
             </Link>
           </li>
         </ul>
-        <div class="mt-auto border-t border-slate-800 px-2 py-2">
-          <div class="flex items-center gap-2">
-            <div class="h-8 w-8 overflow-hidden rounded-full">
+        <div className="mt-auto border-t border-slate-800 px-2 py-2">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 overflow-hidden rounded-full">
               <img
-                class="rounded-full h-full w-full"
+                className="rounded-full h-full w-full"
                 src="https://picsum.photos/200"
               />
             </div>
             <div>
-              <p class="text-sm text-marble-blue">{`${userName}`}</p>
+              <p className="text-sm text-marble-blue">{`${userName}`}</p>
               <p>
                     <a
                         href=""
                         onClick={handleLogout} 
-                        className="text-rescue-orange mr-4 hover:underline md:mr-6">
+                        classNameName="text-rescue-orange mr-4 hover:underline md:mr-6">
                         Logout
                     </a>
                 </p>

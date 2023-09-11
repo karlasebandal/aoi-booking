@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 //import components
 import { useAuth2 } from './AuthContextUser'
-import { AuthProviderGuest } from './AuthContextGuest'
-import { AuthProviderUser } from './AuthContextUser'
 
 //navbar access
 import NavBar from './NavBar'
@@ -16,6 +14,7 @@ import GuestLogin from "./GuestLogin" //Guest
 import GuestDashboard from "./GuestDashboard"
 import GuestRegistration from "./GuestRegistration"
 import GuestPayment from "./GuestPayment"
+import BookingListByGuestContainer from "./BookingListByGuestContainer"
 
 //main access
 import HomePage from '../pages/HomePage'
@@ -41,7 +40,6 @@ function App() {
 
    <Router>
     <div className="flex flex-col mx-auto">
-      
         <header>
           <NavBar />
         </header>
@@ -54,20 +52,18 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
+
             <Route path="/guestregistration" element={<GuestRegistration />} />
             <Route path="/guestdashboard" element={<GuestDashboard />} />
             <Route path="/guestpayment" element={<GuestPayment />} />
             <Route path="/login" element={<GuestLogin />} />
-          
-            
+            <Route path="/bookingListByGuest" element={<BookingListByGuestContainer />} />
          
             <Route path="/admin" element={<UserLogin />} />
             <Route path="/uregistration" element={<UserRegistration />} />
             <Route path="/userdashboard" element={<UserDashboard userName={userName}/>} />
             <Route path="/userpayment" element={<UserPayment />} />
           
-
-            <Route path="/contact" element={<Contact />} />
             <Route path="/ropeaccess" element={<RopeAccess />} />
             <Route path="/whitewaterrafting" element={<WhiteWaterRafting />} />
         </Routes>

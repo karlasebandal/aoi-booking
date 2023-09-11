@@ -154,18 +154,18 @@ const RopeAccess = () => {
           <div className="w-12/12  pl-5">
           <div className="items-center w-8/12 my-5">Number of Guests</div>
 
-          <div class="w-8/12 my-3">
+          <div className="w-8/12 my-3">
             <div className="inline-flex justify-center align-middle">
               <button
                 onClick={handleIncrement}
-                class="bg-rescue-orange text-navy-blue p-3 mr-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                className="bg-rescue-orange text-navy-blue p-3 mr-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               >
                 +
               </button>
-              <div class="mx-3">{numOfGuests}</div>
+              <div className="mx-3">{numOfGuests}</div>
               <button
                 onClick={handleDecrement}
-                class="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
+                className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
               >
                 -
               </button>
@@ -236,7 +236,7 @@ const RopeAccess = () => {
             {/* ... login modal ... */}
 
             {isLoginModalOpen && ( //opens modal
-              <GuestLogin/> //sets to false
+              <GuestLogin handleCloseModal={handleCloseModal}/> //sets to false
             )}
 
 
