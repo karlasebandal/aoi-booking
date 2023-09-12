@@ -792,41 +792,40 @@ app.get("/guest", async(req, res) => {
 
 //Get Booking
 app.get("/booking", async(req, res) => {
-    try {
-        const allBooking = await pool.query(
-            'SELECT * FROM booking');
-        res.json(allBooking.rows);
+    // try {
+    //     const allBooking = await pool.query(
+    //         'SELECT * FROM booking');
+    //     res.json(allBooking.rows);
     
-    } catch (err) {
-        console.error(err.message);
-    }
+    // } catch (err) {
+    //     console.error(err.message);
+    // }
+
+    try {
+        const query = `
+        SELECT
+        booking.bookingdate,
+            booking.status,
+            booking.bookingid,
+            service.name AS service_name,
+            guest.firstname AS guest_firstname,
+            guest.lastname AS guest_lastname
+      FROM
+        booking
+      INNER JOIN
+        service ON booking.serviceid = service.serviceid
+      INNER JOIN
+        guest ON booking.guestid = guest.guestid;
+        `;
+    
+        const { rows } = await pool.query(query);
+        console.log(rows)
+        res.json(rows)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
 })
-
-// app.get('/booking/:serviceId', async (req, res) => {
-//     try {
-//       const serviceID = req.params.serviceId; // Use req.params to access route parameters
-//       const query = `
-//         SELECT bookingdate, COUNT(*) AS booked_guests
-//         FROM booking
-//         WHERE serviceId = $1
-//         GROUP BY bookingdate
-//       `;
-      
-//       const { rows } = await pool.query(query, [serviceID]);
-//       console.log(rows)
-//       // Log the count of booked guests for each row
-//       rows.forEach((row) => {
-//         console.log(`Date: ${row.bookingdate}, Booked Guests: ${row.booked_guests}`);
-//       });
-  
-//       res.json(rows.map((row) => ({ date: row.bookingdate, bookedGuests: row.booked_guests })));
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//       res.status(500).json({ error: 'An error occurred' });
-//     }
-//   });
-
-//Get Payment
 
 app.get('/booking/:serviceId', async (req, res) => {
     try {
@@ -852,20 +851,6 @@ app.get('/booking/:serviceId', async (req, res) => {
     }
   });
 
-// app.get('/booking/:guestId', async (req, res) => {
-
-//     try {
-//         const { guestId } = req.params;
-//         const allUsers = await pool.query(
-//             'SELECT * FROM \"User\" WHERE username = $1', [guestId]);
-//         res.json(allUsers.rows);
-    
-//     } catch (err) {
-//         console.error(err.message); 
-//     }
-
-   
-// })
 
 app.get('/booking/:guestId', async (req, res) => {
     try {
@@ -1013,18 +998,41 @@ app.put("/Guest/:guestID", async(req, res) => {
 });
 
 // Update booking
-app.put("/Booking/:bookingID", async(req, res) => {
-    try {
-        const { bookingID } = req.params;
-        const { status } = req.body;
-        const updateBooking = await pool.query(
-            "UPDATE Booking SET status = $1 WHERE bookingid = $2",
-        [status, bookingID]);
+app.put("/Booking/:bookingId", async(req, res) => {
+    // try {
+    //     const { bookingID } = req.params;
+    //     const { status } = req.body;
+    //     const updateBooking = await pool.query(
+    //         "UPDATE Booking SET status = $1 WHERE bookingid = $2",
+    //     [status, bookingID]);
 
-        res.json("Booking was updated");
-    } catch (err) {
-        console.error(err.message);
+    //     res.json("Booking was updated");
+    //     console.log(updateBooking)
+    // } catch (err) {
+    //     console.error(err.message);
      
+    // }
+
+    const { bookingId } = req.params;
+    const { status } = req.body;
+  
+    try {
+      const query = `
+        UPDATE Booking
+        SET status = $1
+        WHERE bookingId = $2;
+      `;
+  
+      const result = await pool.query(query, [status, bookingId]);
+  
+      if (result.rowCount === 1) {
+        res.json({ message: 'Status updated successfully' });
+      } else {
+        res.status(404).json({ error: 'Booking not found' });
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 

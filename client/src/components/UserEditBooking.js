@@ -3,53 +3,23 @@ import axios from "axios"
 
 import UserSideBar from "./UserSideBar"
 
-const UserEditBooking = ({ bookingid, handleCloseModal }) => {
-
-    const [status, setStatus] = useState();
-
-    // Edit description function
-
-    const handleEditBooking = async e => {
-        e.preventDefault()
-
-        try {
-            const body = {status};
-            const response = await fetch(`http://localhost:5000/Booking/${bookingid}`,{
-                method: "PUT",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            })
-            // const response = await axios.putt(`http://localhost:5000/Booking/${bookingid}`, {status})
-            // console.log('Status updated successfully:', response.data)
-
-            //handleCloseModal()
-
-            //window.location = "/";
-        } catch (err) {
-            console.error(err.message);
-            
-        }
-        handleCloseModal()
-    };
-
-    const handleOptionChange = (event) => {
-        const selectedStatus = event.target.value
-        alert(`Booking ID: ${bookingid}`)
-        setStatus(selectedStatus)
-      }
+const UserEditBooking = ({ handleCloseModal, onSave, editedStatus, setEditedStatus, bookingIdToEdit }) => {
 
 
+  const handleSave = () => {
+    onSave(bookingIdToEdit, editedStatus); // Pass the bookingId and editedStatus to the onSave function
+    handleCloseModal(); // Close the modal
+  };
+ 
 
   return (
 
     <>
         <div
-        key={bookingid}
         className="relative z-10"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
-        id={`id${bookingid}`}
         >
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
@@ -61,9 +31,7 @@ const UserEditBooking = ({ bookingid, handleCloseModal }) => {
                   <div className="text-center sm:ml-4 sm:mt-0 sm:text-left">
                     
                     <div className="mt-2 w-full">
-                      <h2 className="text-3xl font-bold mb-3 text-gray-800">
-                        Edit Booking
-                      </h2>
+                      <h3>Edit Status for Booking ID: {bookingIdToEdit}</h3>
                       
                       <form className="space-y-5">
                         <div>
@@ -71,8 +39,8 @@ const UserEditBooking = ({ bookingid, handleCloseModal }) => {
                             Status
                           </label>
                           <select 
-                            value={status}
-                            onChange={handleOptionChange}>
+                             value={editedStatus}
+                             onChange={(e) => setEditedStatus(e.target.value)}>
                                 <option value="Completed">Completed</option>
                                 <option value="Confirmed">Confirmed</option>
                                 <option value="Postponed">Postponed</option>
@@ -89,7 +57,7 @@ const UserEditBooking = ({ bookingid, handleCloseModal }) => {
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
                   className="block ml-5 bg-rescue-orange hover:bg-navy-blue hover:from-red-100 hover:to-blue-400 p-4 rounded text-gray-700 hover:text-gray-600 transition duration-300 font-bold text-sm"
-                  onClick={handleEditBooking}
+                  onClick={handleSave}
                   type="submit">
                   Save
                 </button>

@@ -60,7 +60,7 @@ const UserSideBar = ({ userName }) => {
                     <a
                         href=""
                         onClick={handleLogout} 
-                        classNameName="text-rescue-orange mr-4 hover:underline md:mr-6">
+                        className="text-rescue-orange mr-4 hover:underline md:mr-6">
                         Logout
                     </a>
                 </p>
