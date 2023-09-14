@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import axios from "axios";
+import MyDatePicker from '../components/MyDatePicker'
 
 //import image(s)
 import raftingImg from "../assets/images/raft-photos/rafting-banner.JPG";
@@ -21,7 +21,7 @@ const RopeAccess = () => {
   const [meetingTime, setMeetingTime] = useState("");
   const [numOfGuests, setNumOfGuests] = useState(5);
 
-  const currentDate = new Date()
+  //const currentDate = new Date()
 
   const handleIncrement = () => {
     if (numOfGuests >= 5 && numOfGuests <= 42) {
@@ -106,27 +106,27 @@ const RopeAccess = () => {
       .get(`http://localhost:5000/Booking/${serviceID}`)
       .then((response) => setBookingData(response.data))
       .catch((error) => console.error("Error fetching data:", error));
-    console.log(bookingData);
+    //console.log(bookingData);
   }, [serviceID]);
 
-  console.log(`Test: ${selectedDate}`);
+  //console.log(`Test: ${selectedDate}`);
 
   //Date fullybooked
-  const isDateFullyBooked = (date) => {
-    const newDate =
-      selectedDate.getFullYear() +
-      "-" +
-      ("0" + (selectedDate.getMonth())).slice(-2) +
-      "-" +
-      ("0" + selectedDate.getDate()).slice(-2);
-    console.log(`newDate: ${newDate}`);
+  // const isDateFullyBooked = (date) => {
+  //   const newDate =
+  //     selectedDate.getFullYear() +
+  //     "-" +
+  //     ("0" + (selectedDate.getMonth())).slice(-2) +
+  //     "-" +
+  //     ("0" + selectedDate.getDate()).slice(-2);
+  //   console.log(`newDate: ${newDate}`);
 
-    const selectedDateBooking = bookingData.find(
-      (booking) => booking.bookingdate === newDate
-    );
-    console.log(`isDateFullBooked Method: ${selectedDateBooking}`);
-    return selectedDateBooking && selectedDateBooking >= 43;
-  };
+  //   const selectedDateBooking = bookingData.find(
+  //     (booking) => booking.bookingdate === newDate
+  //   );
+  //   console.log(`isDateFullBooked Method: ${selectedDateBooking}`);
+  //   return selectedDateBooking && selectedDateBooking >= 43;
+  // };
 
   //Handle Date Change 1
   // const handleDateChange = (date) => {
@@ -136,66 +136,52 @@ const RopeAccess = () => {
   // }
 
   //Handle Date Change 2
-  const handleDateChange = (date) => {
-    const formattedDate = date.toISOString().split("T")[0];
-    console.log("Formatted Date:", formattedDate); // Add this line to log the formatted date
-    const selectedDateBooking = bookingData.find(
-      (booking) => booking.bookingdate === formattedDate
-    );
+  // const handleDateChange = (date) => {
+  //   const formattedDate = date.toISOString().split("T")[0];
+  //   console.log("Formatted Date:", formattedDate); // Add this line to log the formatted date
+  //   const selectedDateBooking = bookingData.find(
+  //     (booking) => booking.bookingdate === formattedDate
+  //   );
 
-    // Check if the selected date is fully booked
-    if (selectedDateBooking && selectedDateBooking.numguests >= 43) {
-      alert("This date is fully booked");
-      return;
-    }
+  //   // Check if the selected date is fully booked
+  //   if (selectedDateBooking && selectedDateBooking.numguests >= 43) {
+  //     alert("This date is fully booked");
+  //     return;
+  //   }
 
-    setSelectedDate(date);
-  };
+  //   setSelectedDate(date);
+  // };
 
   // Calculate the total booked guests for the selected date
-  const calculateTotalBookedGuests = () => {
-    if (!selectedDate) {
-      return 0;
-    }
+  // const calculateTotalBookedGuests = () => {
+  //   if (!selectedDate) {
+  //     return 0;
+  //   }
 
-    const formattedDate = selectedDate.toISOString().split("T")[0];
-    const selectedDateBookings = bookingData.filter(
-      (booking) => booking.bookingdate === formattedDate
-    );
+  //   const formattedDate = selectedDate.toISOString().split("T")[0];
+  //   const selectedDateBookings = bookingData.filter(
+  //     (booking) => booking.bookingdate === formattedDate
+  //   );
 
-    // Calculate the total booked guests for the selected date
-    return selectedDateBookings.reduce(
-      (total, booking) => total + booking.numguests,
-      0
-    );
-  };
+  //   // Calculate the total booked guests for the selected date
+  //   return selectedDateBookings.reduce(
+  //     (total, booking) => total + booking.numguests,
+  //     0
+  //   );
+  // };
 
-  //filterdate1
-  // const filterDate = (date) => {
-  //   return isDateFullyBooked(date) || date < new Date()
-  // }
 
   //filterdate2
-  const filterDate = (date) => {
-    const formattedDate = date.toISOString().split("T")[0];
-    const selectedDateBooking = bookingData.find(
-      (booking) => booking.bookingdate === formattedDate
-    );
+  // const filterDate = (date) => {
+  //   const formattedDate = date.toISOString().split("T")[0];
+  //   const selectedDateBooking = bookingData.find(
+  //     (booking) => booking.bookingdate === formattedDate
+  //   );
 
-    // Disable the date if it's fully booked (numguests >= 43) or in the past (date < currentDate)
-    return !selectedDateBooking || selectedDateBooking.numguests >= 43
-  };
-
-  // const fetchBookingData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:5000/Booking/${serviceID}`
-  //     );
-  //     setBookingData(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching booking data:", error);
-  //   }
+  //   // Disable the date if it's fully booked (numguests >= 43) or in the past (date < currentDate)
+  //   return !selectedDateBooking || selectedDateBooking.numguests >= 43
   // };
+
 
   return (
     <div className="container mx-auto m-20">
@@ -268,13 +254,14 @@ const RopeAccess = () => {
 
             <p className="my-3">Select a date</p>
             <label></label>
-            <DatePicker
+            {/* <DatePicker
               className="flex"
               selected={selectedDate}
               onChange={handleDateChange}
               minDate={currentDate}
               filterDate={filterDate}
-            />
+            /> */}
+            <MyDatePicker />
 
             <p className="my-3 w-4/12">Select Time</p>
             <select

@@ -13,7 +13,7 @@ import Services from "./Services"
 import GuestLogin from "./GuestLogin" //Guest
 import GuestDashboard from "./GuestDashboard"
 import GuestRegistration from "./GuestRegistration"
-import GuestPayment from "./GuestPayment"
+import GuestTransactionsContainer from "./GuestTransactionsContainer"
 import BookingListByGuestContainer from "./BookingListByGuestContainer"
 
 //main access
@@ -55,7 +55,7 @@ function App() {
 
             <Route path="/guestregistration" element={<GuestRegistration />} />
             <Route path="/guestdashboard" element={<GuestDashboard />} />
-            <Route path="/guestpayment" element={<GuestPayment />} />
+            <Route path="/GuestTransactions" element={<GuestTransactionsContainer />} />
             <Route path="/login" element={<GuestLogin />} />
             <Route path="/bookingListByGuest" element={<BookingListByGuestContainer />} />
          

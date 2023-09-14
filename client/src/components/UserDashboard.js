@@ -13,27 +13,29 @@ const UserDashboard = ({ userName }) => {
   const location = useLocation();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]);
+
   const [editedStatus, setEditedStatus] = useState("");
   const [editBookingId, setEditBookingId] = useState(null);
+  
   const { userIsLoggedIn } = useAuth2();
 
-  const deleteBooking = async (bookingid) => {
-    try {
-      const deleteBooking = await fetch(
-        `http://localhost:5000/booking/${bookingid}`,
-        {
-          method: "DELETE",
-        }
-      );
+  // const deleteBooking = async (bookingid) => {
+  //   try {
+  //     const deleteBooking = await fetch(
+  //       `http://localhost:5000/booking/${bookingid}`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
 
-      setBookings(
-        bookings.filter((booking) => booking.bookingid !== bookingid)
-      );
-    } catch (err) {
-      console.error(err.message);
-      //alert("Cannot delete this booking. Payment has been done.")
-    }
-  };
+  //     setBookings(
+  //       bookings.filter((booking) => booking.bookingid !== bookingid)
+  //     );
+  //   } catch (err) {
+  //     console.error(err.message);
+  //     //alert("Cannot delete this booking. Payment has been done.")
+  //   }
+  // };
 
   // const getBookings = async() => {
   //     try {
@@ -46,15 +48,6 @@ const UserDashboard = ({ userName }) => {
   //         console.error(err.message)
   //     }
   // }
-
-  useEffect(() => {
-    // Replace 'fetchDataFromAPI' with the actual API call to fetch the data
-    // You may need to use axios, fetch, or any other library for API requests
-    fetch("http://localhost:5000/booking")
-      .then((response) => response.json())
-      .then((data) => setBookings(data))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
 
   const toggleEditModal = () => {
     setIsEditModalOpen(true);
@@ -86,7 +79,7 @@ const UserDashboard = ({ userName }) => {
   };
 
   const handleStatusChange = async () => {
-    // Send an API request to update the status for the booking
+    
     try {
       const response = await fetch(`http://localhost:5000/booking/${editBookingId}`, {
         method: "PUT",
@@ -99,10 +92,15 @@ const UserDashboard = ({ userName }) => {
       //console.log(editBookingId)
 
       if (response.ok) {
-        // Update the local bookings data or trigger a new data fetch
-        // You can decide how you want to handle this part
-        console.log("Status updated successfully");
-        setEditBookingId(null);
+        const updatedBooking = await response.json();
+        const updatedBookings = bookings.map((booking) =>
+          booking.bookingid === updatedBooking.bookingid ? updatedBooking : booking
+      )
+
+      console.log("Status updated successfully");
+      setBookings(updatedBookings) 
+      setEditBookingId(null)
+
       } else {
         console.error("Failed to update status");
       }
@@ -110,6 +108,13 @@ const UserDashboard = ({ userName }) => {
       console.error("Error updating status:", error);
     }
   };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/booking")
+      .then((response) => response.json())
+      .then((data) => setBookings(data))
+      .catch((error) => console.error("Error fetching data:", error));
+}, [editBookingId]);
 
   return (
     <div>
@@ -163,9 +168,8 @@ const UserDashboard = ({ userName }) => {
                             value={editedStatus}
                             onChange={(e) => setEditedStatus(e.target.value)}
                           >
-                            <option value="Completed">Completed</option>
+                                <option value="Completed">Completed</option>
                                 <option value="Confirmed">Confirmed</option>
-                                <option value="Postponed">Postponed</option>
                                 <option value="Cancelled">Cancelled</option>
                           </select>
                         ) : (
@@ -195,9 +199,12 @@ const UserDashboard = ({ userName }) => {
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {editBookingId === book.bookingid ? (
-                          <button onClick={handleStatusChange}>Save</button>
+                          <button 
+                          className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-rescue-orange focus:text-navy-blue"
+                          onClick={handleStatusChange}>Save</button>
                         ) : (
                           <button
+                            className="bg-navy-blue text-purity p-3 ml-3 font-normal rounded-lg  hover:ring-marble-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
                             onClick={() =>
                               handleEditStatus(book.bookingid, book.status)
                             }
@@ -207,7 +214,7 @@ const UserDashboard = ({ userName }) => {
                         )}
                       </td>
                       <td key={book.bookingid}>
-                        <button
+                        {/* <button
                           key={book.bookingid}
                           onClick={toggleEditModal}
                           className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
@@ -222,16 +229,16 @@ const UserDashboard = ({ userName }) => {
                           /> //sets to false
                         ) : (
                           <></>
-                        )}
+                        )} */}
                       </td>
-                      <td>
+                      {/* <td>
                         <button
                           className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
                           onClick={() => deleteBooking(book.bookingid)}
                         >
                           Delete
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>

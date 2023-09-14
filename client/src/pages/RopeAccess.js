@@ -22,6 +22,7 @@ const RopeAccess = () => {
   const { isLoggedIn, guestId } = useAuth1()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [numOfGuests, setNumOfGuests] = useState(1)
+  const currentDate = new Date()
 
   //When Book button is clicked
   const handleBooking = async () => {
@@ -198,6 +199,7 @@ const RopeAccess = () => {
             <DatePicker
               className="flex mr-3 rounded-md"
               selected={meetingDate}
+              minDate={currentDate}
               onChange={(date) => setMeetingDate(date)} />
 
             <p className="my-3 w-4/12">Select Time</p>

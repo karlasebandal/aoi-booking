@@ -4,7 +4,80 @@ SELECT * FROM Booking
 SELECT * FROM Payment 
 SELECT * FROM PaymentMode 
 SELECT * FROM Guest
+SELECT * FROM Service
 SELECT bookingdate, COUNT(*) AS booked_guests
         FROM booking
         WHERE serviceId = 1
         GROUP BY bookingdate
+
+         SELECT
+            booking.bookingdate,
+            booking.status,
+			booking.bookingid,
+            service.name AS service_name,
+            guest.firstname AS guest_firstname,
+            guest.lastname AS guest_lastname
+          FROM
+            booking
+          INNER JOIN
+            service ON booking.serviceid = service.serviceid
+          INNER JOIN
+            guest ON booking.guestid = guest.guestid
+			
+			UPDATE Booking
+        	SET status = booking.status
+       		WHERE bookingId = 45;
+			
+SELECT 
+	booking.bookingdate, 
+	booking.bookingtime, 
+	booking.status, 
+	booking.bookingtype,
+	service.name AS service_name
+FROM Booking 
+INNER JOIN service ON booking.serviceid = service.serviceid
+WHERE guestId = 4
+
+SELECT bookingid, bookingdate, bookingtime, status, bookingtype, service.name AS service_name 
+FROM Booking 
+INNER JOIN Service ON booking.serviceid = service.serviceid 
+WHERE guestId = 4
+
+ALTER TABLE Service
+RENAME status TO service_status
+
+SELECT
+    service.name AS service_name,
+    booking.status AS booking_status,
+    booking.bookingtype AS booking_type,
+    booking.depositamount AS deposit_amount,
+    booking.totalpayment AS deposit_amount
+FROM
+    Booking
+INNER JOIN
+    Service ON Booking.serviceid = Service.serviceid
+LEFT JOIN
+    Payment ON Booking.bookingid = Payment.bookingid
+WHERE
+    Booking.guestid = your_guest_id
+GROUP BY
+    service.name,
+    booking.status,
+    booking.bookingtype,
+    booking.depositamount;
+	
+SELECT
+    service.name AS service_name,
+    booking.status AS booking_status,
+    booking.bookingtype AS booking_type,
+    payment.depositamount AS deposit_amount,
+    payment.totalpayment AS total_payment
+FROM
+    Booking
+INNER JOIN
+    Service ON Booking.serviceid = Service.serviceid
+LEFT JOIN
+    Payment ON Booking.bookingid = Payment.bookingid
+WHERE
+    Booking.guestid = 4;
+	
