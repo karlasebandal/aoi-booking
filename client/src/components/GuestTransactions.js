@@ -5,8 +5,28 @@ import axios from 'axios';
 const GuestTransactions = () => {
   const { isLoggedIn, guestId } = useAuth1()
     const [guestData, setGuestData] = useState(null)
+    const [payment, setPayment] = useState(false)
 
     const [payments, setPayments] = useState([])
+
+    const isBookingPending = (pay) => {
+      return pay.booking_status === "Pending";
+    };
+
+    const renderPayButton = (pay) => {
+      if (isBookingPending(pay)) {
+        return (
+          <button
+            className="bg-navy-blue text-purity p-3 ml-3 font-normal rounded-lg  hover:ring-marble-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue f ocus:text-rescue-orange"
+            //onClick={() => deleteBooking(book.bookingid)}
+          >
+            Pay
+          </button>
+        );
+      } else {
+        return null;
+      }
+    };
 
     const getPayments = async() => {
       try {
@@ -18,6 +38,8 @@ const GuestTransactions = () => {
           const paymentResponse = await axios.get(`http://localhost:5000/payment/${guestId}`)
           const paymentData = paymentResponse.data
           setPayments(paymentData);
+
+
     
       } catch (err) {
           console.error(err.message)
@@ -70,6 +92,15 @@ const GuestTransactions = () => {
                           key={pay.paymentid}
                           scope="col"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{pay.total_payment}</td>
+                        
+                        <td>
+                          {renderPayButton(pay)}
+                          {/* <button 
+                            className="bg-navy-blue text-purity p-3 ml-3 font-normal rounded-lg  hover:ring-marble-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue f ocus:text-rescue-orange" 
+                            //onClick={() => deleteBooking(book.bookingid)}
+                            >Pay</button> */}
+                        
+                        </td>
                         
                         {/* <td> <UserEditBooking pay={pay} /> </td> */}
                         {/* <td><button className="btn btn-danger" onClick={() => deleteBooking(book.bookingid)}>Pay</button></td> */}

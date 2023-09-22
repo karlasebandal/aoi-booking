@@ -75,9 +75,9 @@ useEffect(() => {
         <div>
           <div className="flex flex-row">
             
-              {" "}
+              
               <div className="relative overflow-x-auto">
-              <div>{}</div>
+              
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
@@ -109,7 +109,6 @@ useEffect(() => {
                             onChange={(e) => setEditedStatus(e.target.value)}
                           >
                                 <option value="Completed">Completed</option>
-                                <option value="Confirmed">Confirmed</option>
                                 <option value="Cancelled">Cancelled</option>
                           </select>
                         ) : (
@@ -124,7 +123,7 @@ useEffect(() => {
                         
                         <td
                         scope="col"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"y
                       >
                         {editBookingId === book.bookingid ? (
                           <button 

@@ -19,35 +19,35 @@ const UserDashboard = ({ userName }) => {
   
   const { userIsLoggedIn } = useAuth2();
 
-  // const deleteBooking = async (bookingid) => {
-  //   try {
-  //     const deleteBooking = await fetch(
-  //       `http://localhost:5000/booking/${bookingid}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
+  const deleteBooking = async (bookingid) => {
+    try {
+      const deleteBooking = await fetch(
+        `http://localhost:5000/booking/${bookingid}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-  //     setBookings(
-  //       bookings.filter((booking) => booking.bookingid !== bookingid)
-  //     );
-  //   } catch (err) {
-  //     console.error(err.message);
-  //     //alert("Cannot delete this booking. Payment has been done.")
-  //   }
-  // };
+      setBookings(
+        bookings.filter((booking) => booking.bookingid !== bookingid)
+      );
+    } catch (err) {
+      console.error(err.message);
+      //alert("Cannot delete this booking. Payment has been done.")
+    }
+  };
 
-  // const getBookings = async() => {
-  //     try {
+  const getBookings = async() => {
+      try {
 
-  //         const response = await fetch("http://localhost:5000/booking")
-  //         const jsonData = await response.json();
-  //         setBooking(jsonData);
+          const response = await fetch("http://localhost:5000/booking")
+          const jsonData = await response.json();
+          setBooking(jsonData);
 
-  //     } catch (err) {
-  //         console.error(err.message)
-  //     }
-  // }
+      } catch (err) {
+          console.error(err.message)
+      }
+  }
 
   const toggleEditModal = () => {
     setIsEditModalOpen(true);
@@ -231,14 +231,14 @@ const UserDashboard = ({ userName }) => {
                           <></>
                         )} */}
                       </td>
-                      {/* <td>
+                      <td>
                         <button
                           className="bg-rescue-orange text-navy-blue p-3 ml-3 font-normal rounded-lg  hover:ring-navy-blue active:bg-marble-blue focus:outline-none focus:ring focus:ring-marble-blue focus:bg-marble-blue focus:text-rescue-orange"
                           onClick={() => deleteBooking(book.bookingid)}
                         >
                           Delete
                         </button>
-                      </td> */}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

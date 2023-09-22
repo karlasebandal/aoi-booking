@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import MyDatePicker from '../components/MyDatePicker'
+import DatePicker from "react-datepicker";
+import { format, parseISO } from "date-fns";
 
 //import image(s)
 import raftingImg from "../assets/images/raft-photos/rafting-banner.JPG";
@@ -10,18 +12,30 @@ import raftingImg from "../assets/images/raft-photos/rafting-banner.JPG";
 import { useAuth1 } from "../components/AuthContextGuest"
 import GuestLogin from "../components/GuestLogin"
 
-const RopeAccess = () => {
+const WhiteWaterRafting = () => {
   const location = useLocation();
   const { isLoggedIn, guestId } = useAuth1();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { serviceID } = location.state || {};
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [bookingData, setBookingData] = useState([]);
   const [meetingTime, setMeetingTime] = useState("");
   const [numOfGuests, setNumOfGuests] = useState(5);
+  const [guestsLeft, setGuestsLeft] = useState();
 
-  //const currentDate = new Date()
+  const [fullyBookedDates, setFullyBookedDates] = useState([]);
+  const [isFullyBooked, setIsFullyBooked] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const [countGuests, setCountGuests] = useState([]);
+
+  const currentDate = new Date()
+  
+  const handleDateChange = (date) => {
+    //const selectedFormattedDate = format(date, "yyyy-MM-dd")
+    //const formattedDate = date.toISOString().split("T")[0];
+    setSelectedDate(date)    
+  };
 
   const handleIncrement = () => {
     if (numOfGuests >= 5 && numOfGuests <= 42) {
@@ -41,32 +55,43 @@ const RopeAccess = () => {
 
   //When Book button is clicked
   const handleBooking = async () => {
+
     console.log(`Rafting Guest id: ${guestId}`);
-    try {
-      // Create the booking data
-      const formattedDate = selectedDate.toISOString().split("T")[0];
 
-      const newBooking = {
-        bookingcreated: new Date().toISOString(),
-        status: "Pending",
-        bookingtype: "Face to Face",
-        serviceid: serviceID,
-        guestid: parseInt(guestId), // check on this
-        bookingdate: formattedDate,
-        bookingtime: meetingTime,
-        numguests: parseInt(numOfGuests),
-      };
-
-      // Send the data to the backend API
-      await axios.post("http://localhost:5000/Booking", newBooking);
-
-      // Handle success
-      alert("Booking created successfully");
-    } catch (error) {
-      // Handle error
-      console.error("Error creating booking:", error);
-      alert("An error occurred while creating the booking");
+    if (isFullyBooked) {
+      alert("HandleBOoking: This date is fully booked. Please select another date.");
+      return; // Prevent further booking process
+    }else{
+      try {
+        // Create the booking data
+        const formattedDate = selectedDate.toISOString().split("T")[0];
+        //const selectedFormattedDate = format(selectedDate, "yyyy-MM-dd");
+        //console.log('FormattedDate Updated in Rafting:', formattedDate)
+  
+        const newBooking = {
+          bookingcreated: new Date().toISOString(),
+          status: "Pending",
+          bookingtype: "Face to Face",
+          serviceid: serviceID,
+          guestid: parseInt(guestId), // check on this
+          bookingdate: formattedDate,
+          bookingtime: meetingTime,
+          numguests: parseInt(numOfGuests),
+        };
+  
+        // Send the data to the backend API
+        await axios.post("http://localhost:5000/Booking", newBooking);
+  
+        // Handle success
+        alert("Booking created successfully");
+      } catch (error) {
+        // Handle error
+        console.error("Error creating booking:", error);
+        alert("An error occurred while creating the booking");
+      }
     }
+
+    
   };
 
   const toggleLoginModal = () => {
@@ -84,6 +109,46 @@ const RopeAccess = () => {
   const handleCloseModal = () => {
     setIsLoginModalOpen(false);
   };
+
+  const fetchBookingData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/countNumGuestsPerDate`
+      );
+      const data = response.data;
+      setCountGuests(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDate) {
+      // Format the selected date using date-fns
+      const selectedFormattedDate = format(selectedDate, "yyyy-MM-dd");
+
+      const fullyBooked = countGuests.some(
+        (item) =>
+          item.formattedbookingdate === selectedFormattedDate &&
+          item.totalnumguests >= 43
+      );
+      console.log('useeffect-child', fullyBooked)
+      setIsFullyBooked(fullyBooked);
+
+      // const remainingGuests = countGuests.map(
+      //   (item) => 
+      //     item.totalnumguests * element);
+
+      if (fullyBooked) {
+        setFullyBookedDates([selectedDate]);
+        setIsFullyBooked(true)
+      } else {
+        setFullyBookedDates([]);
+        setIsFullyBooked(false)
+      }
+      console.log('fullyBookedDates', fullyBookedDates)
+    }
+  }, [selectedDate]);
 
   // Add event listener to handle Escape key press
   useEffect(() => {
@@ -109,78 +174,9 @@ const RopeAccess = () => {
     //console.log(bookingData);
   }, [serviceID]);
 
-  //console.log(`Test: ${selectedDate}`);
-
-  //Date fullybooked
-  // const isDateFullyBooked = (date) => {
-  //   const newDate =
-  //     selectedDate.getFullYear() +
-  //     "-" +
-  //     ("0" + (selectedDate.getMonth())).slice(-2) +
-  //     "-" +
-  //     ("0" + selectedDate.getDate()).slice(-2);
-  //   console.log(`newDate: ${newDate}`);
-
-  //   const selectedDateBooking = bookingData.find(
-  //     (booking) => booking.bookingdate === newDate
-  //   );
-  //   console.log(`isDateFullBooked Method: ${selectedDateBooking}`);
-  //   return selectedDateBooking && selectedDateBooking >= 43;
-  // };
-
-  //Handle Date Change 1
-  // const handleDateChange = (date) => {
-  //   if (!isDateFullyBooked(date)) {
-  //     setSelectedDate(date);
-  //   }
-  // }
-
-  //Handle Date Change 2
-  // const handleDateChange = (date) => {
-  //   const formattedDate = date.toISOString().split("T")[0];
-  //   console.log("Formatted Date:", formattedDate); // Add this line to log the formatted date
-  //   const selectedDateBooking = bookingData.find(
-  //     (booking) => booking.bookingdate === formattedDate
-  //   );
-
-  //   // Check if the selected date is fully booked
-  //   if (selectedDateBooking && selectedDateBooking.numguests >= 43) {
-  //     alert("This date is fully booked");
-  //     return;
-  //   }
-
-  //   setSelectedDate(date);
-  // };
-
-  // Calculate the total booked guests for the selected date
-  // const calculateTotalBookedGuests = () => {
-  //   if (!selectedDate) {
-  //     return 0;
-  //   }
-
-  //   const formattedDate = selectedDate.toISOString().split("T")[0];
-  //   const selectedDateBookings = bookingData.filter(
-  //     (booking) => booking.bookingdate === formattedDate
-  //   );
-
-  //   // Calculate the total booked guests for the selected date
-  //   return selectedDateBookings.reduce(
-  //     (total, booking) => total + booking.numguests,
-  //     0
-  //   );
-  // };
-
-
-  //filterdate2
-  // const filterDate = (date) => {
-  //   const formattedDate = date.toISOString().split("T")[0];
-  //   const selectedDateBooking = bookingData.find(
-  //     (booking) => booking.bookingdate === formattedDate
-  //   );
-
-  //   // Disable the date if it's fully booked (numguests >= 43) or in the past (date < currentDate)
-  //   return !selectedDateBooking || selectedDateBooking.numguests >= 43
-  // };
+  useEffect(() => {
+    fetchBookingData();
+  }, []);
 
 
   return (
@@ -254,15 +250,19 @@ const RopeAccess = () => {
 
             <p className="my-3">Select a date</p>
             <label></label>
-            {/* <DatePicker
+            <DatePicker
               className="flex"
               selected={selectedDate}
               onChange={handleDateChange}
               minDate={currentDate}
-              filterDate={filterDate}
-            /> */}
-            <MyDatePicker />
-
+              //filterDate={filterDate}
+            />
+            {isFullyBooked && <p>This date is fully booked.</p>}
+            {/* {numGuest && <p>Remaining guests: {guestsLeft}</p>} */}
+            {/* <MyDatePicker onDateSelect={handleDateSelect} />
+            <p>Selected date: </p>
+            <p>Is fully booked: {isDateFullyBooked}</p> */}
+            
             <p className="my-3 w-4/12">Select Time</p>
             <select
               value={meetingTime}
@@ -304,11 +304,12 @@ const RopeAccess = () => {
         </div>
 
         <div className="flex justify-center text-6xl border-gray-300 rounded-xl p-6 bg-gray-100">
-          4
+          {/* {console.log('selecteddate', selectedDate)}
+          {console.log('isdatefullybooked', isDateFullyBooked)} */}
         </div>
       </div>
     </div>
   );
 };
 
-export default RopeAccess;
+export default WhiteWaterRafting;
